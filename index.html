@@ -1,0 +1,2363 @@
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎯</text></svg>">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Алгебрын Тулаан | 8-9-р Анги</title>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
+<script>
+MathJax = {
+  tex: { inlineMath: [['$','$'], ['\\(','\\)']], displayMath: [['$$','$$']] },
+  options: { skipHtmlTags: ['script','noscript','style','textarea'] },
+  startup: { typeset: false }
+};
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-chtml.min.js"></script>
+
+
+<style>
+:root {
+  --bg: #060d18;
+  --bg2: #0a1628;
+  --bg3: #0d1f33;
+  --border: #1e3a5a;
+  --accent: #00b4d8;
+  --accent2: #ff6b35;
+  --accent3: #f72585;
+  --green: #06d6a0;
+  --yellow: #ffd60a;
+  --red: #ef233c;
+  --text: #cdd9e5;
+  --muted: #4a6080;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Share Tech Mono', monospace;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* SCREENS */
+.screen { display: none; min-height: 100vh; }
+.screen.active { display: flex; flex-direction: column; }
+
+/* ── HOME ── */
+#home {
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+.home-bg {
+  position: absolute; inset: 0;
+  display: grid;
+  grid-template-columns: repeat(10, 1fr);
+  grid-template-rows: repeat(10, 1fr);
+  pointer-events: none;
+}
+.home-bg-cell {
+  border: 1px solid var(--border);
+  opacity: 0.3;
+  transition: opacity 0.3s;
+}
+.home-inner { position: relative; z-index: 1; text-align: center; padding: 40px; }
+.logo-title {
+  font-family: 'Orbitron', monospace;
+  font-size: clamp(36px, 8vw, 72px);
+  font-weight: 900;
+  line-height: 1;
+  color: #fff;
+  text-shadow: 0 0 40px #00b4d888;
+  letter-spacing: 4px;
+  animation: glow 3s ease-in-out infinite;
+}
+.logo-title span { color: var(--accent); }
+.logo-sub {
+  font-size: 13px;
+  color: var(--muted);
+  letter-spacing: 6px;
+  text-transform: uppercase;
+  margin: 12px 0 48px;
+}
+@keyframes glow {
+  0%,100% { text-shadow: 0 0 20px #00b4d855; }
+  50% { text-shadow: 0 0 60px #00b4d8cc, 0 0 100px #00b4d844; }
+}
+.home-btns { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; }
+.btn-home {
+  padding: 18px 48px;
+  font-family: 'Orbitron', monospace;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  border: 2px solid;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s;
+  clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+}
+.btn-home::before {
+  content: '';
+  position: absolute; inset: 0;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.btn-home:hover::before { opacity: 1; }
+.btn-home:hover { transform: translateY(-3px); }
+.btn-teacher {
+  background: #0a2a4a;
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.btn-teacher::before { background: var(--accent); }
+.btn-teacher:hover { color: var(--bg); }
+.btn-student {
+  background: #2a0a0a;
+  border-color: var(--accent2);
+  color: var(--accent2);
+}
+.btn-student::before { background: var(--accent2); }
+.btn-student:hover { color: var(--bg); }
+.home-hint { margin-top: 32px; color: var(--muted); font-size: 12px; letter-spacing: 3px; }
+
+/* ── TEACHER ── */
+#teacher { padding: 0; }
+.panel-header {
+  display: flex; align-items: center; gap: 16px;
+  padding: 14px 24px;
+  background: var(--bg3);
+  border-bottom: 1px solid var(--border);
+}
+.panel-title {
+  font-family: 'Orbitron', monospace;
+  font-size: 18px; color: var(--accent); flex: 1;
+}
+.teacher-body {
+  display: flex; flex-wrap: wrap; gap: 24px;
+  padding: 24px; flex: 1;
+}
+.t-panel { display: flex; flex-direction: column; gap: 16px; min-width: 220px; flex: 1; }
+.t-card {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  padding: 20px; border-radius: 4px;
+}
+.t-card-title {
+  font-family: 'Orbitron', monospace;
+  font-size: 11px; color: var(--accent);
+  letter-spacing: 3px; text-transform: uppercase;
+  margin-bottom: 16px;
+}
+.t-btn {
+  display: block; width: 100%;
+  padding: 10px 16px; margin-bottom: 10px;
+  background: var(--bg2); border: 1px solid var(--border);
+  color: #90caf9; border-radius: 3px;
+  cursor: pointer; font-size: 13px;
+  font-family: 'Share Tech Mono', monospace;
+  text-align: left; transition: all 0.2s;
+}
+.t-btn:hover { border-color: var(--accent); color: var(--accent); }
+.t-btn-primary {
+  background: linear-gradient(135deg, #1565c0, #0d47a1);
+  border-color: var(--accent); color: #fff; font-weight: 700;
+}
+.t-btn-primary:hover { background: linear-gradient(135deg, #1e88e5, #1565c0); color: #fff; }
+.room-code-box {
+  margin-top: 16px; padding: 20px;
+  background: var(--bg); border-radius: 4px;
+  border: 2px solid var(--yellow); text-align: center;
+}
+.room-code-label { font-size: 10px; color: var(--muted); letter-spacing: 3px; margin-bottom: 8px; }
+.room-code-val {
+  font-family: 'Orbitron', monospace;
+  font-size: 26px; font-weight: 900;
+  color: var(--yellow); letter-spacing: 5px;
+}
+.room-code-hint { font-size: 11px; color: var(--muted); margin-top: 8px; }
+.score-row {
+  display: flex; justify-content: space-between;
+  padding: 6px 0; font-size: 13px;
+  border-bottom: 1px solid var(--bg2);
+}
+.score-val { color: var(--green); font-weight: 700; }
+.score-neg { color: var(--red); font-weight: 700; }
+
+/* ── GRID ── */
+.grid-wrap { user-select: none; }
+.grid-hint { color: var(--muted); font-size: 11px; margin-top: 8px; text-align: center; letter-spacing: 2px; }
+.grid-table { border-collapse: collapse; }
+.grid-corner { width: 28px; height: 28px; }
+.grid-col-head, .grid-row-head {
+  width: 34px; height: 34px;
+  text-align: center; vertical-align: middle;
+  font-size: 11px; color: var(--muted);
+}
+.grid-cell {
+  width: 34px; height: 34px;
+  border: 1px solid #1a3050;
+  background: #080f1c;
+  cursor: pointer;
+  text-align: center; vertical-align: middle;
+  font-size: 15px;
+  transition: background 0.1s, border-color 0.1s;
+  position: relative;
+}
+.grid-cell:hover { border-color: var(--accent); background: #0d2040; }
+#teacherGrid .grid-cell.ship { background: #0d3a6e; border-color: #2979ff; }
+#teacherGrid .grid-cell.ship-head { background: #1a0a5c; border-color: #7c4dff; }
+#teacherGrid .grid-cell.ship-head::after { content: '★'; color: #b39ddb; font-size: 10px; }
+.grid-cell.selected { border-color: var(--yellow) !important; background: #2a2500 !important; box-shadow: 0 0 8px var(--yellow); }
+/* Буруу бодсон — бүдэг шар, үсэггүй, дахин буудах боломжтой */
+.grid-cell.wrong-ans {
+  background: #1a1500;
+  border-color: #7a6000;
+  cursor: pointer;
+  box-shadow: inset 0 0 6px #ffd60a22;
+}
+.grid-cell.wrong-ans:hover { border-color: var(--yellow); background: #2a2000; }
+/* Сурагчийн нүдний төлөвүүд */
+.grid-cell.miss  {
+  background: #0d1f33;
+  border-color: #2a4a6a;
+  cursor: default;
+}
+.grid-cell.miss::after {
+  content: 'Х';
+  color: #e0e8f0;
+  font-size: 14px; font-weight: 900;
+  font-family: 'Orbitron', monospace;
+}
+.grid-cell.hit   {
+  background: #2a0800;
+  border-color: #8b2500;
+  cursor: default;
+}
+.grid-cell.hit::after {
+  content: 'Ш';
+  color: #c84000;
+  font-size: 14px; font-weight: 900;
+  font-family: 'Orbitron', monospace;
+}
+.grid-cell.sunk  {
+  background: #1e0000;
+  border-color: #e53935;
+  cursor: default;
+  box-shadow: inset 0 0 8px #e5393533;
+}
+.grid-cell.sunk::after {
+  content: 'С';
+  color: #ef5350;
+  font-size: 14px; font-weight: 900;
+  font-family: 'Orbitron', monospace;
+}
+.grid-cell.anim-correct { animation: cellOk 0.6s ease; }
+.grid-cell.anim-wrong { animation: cellBad 0.5s ease; }
+@keyframes cellOk {
+  0%,100% { transform: scale(1); }
+  40% { transform: scale(1.5); filter: brightness(2.5); }
+}
+@keyframes cellBad {
+  0%,100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
+}
+
+/* ── STUDENT ENTRY ── */
+#entry {
+  align-items: center; justify-content: center;
+}
+.entry-card {
+  background: var(--bg3); border: 1px solid var(--border);
+  border-radius: 6px; padding: 48px 40px;
+  width: 360px; max-width: 90vw; text-align: center;
+}
+.entry-title {
+  font-family: 'Orbitron', monospace;
+  font-size: 20px; color: var(--accent);
+  margin-bottom: 32px; letter-spacing: 2px;
+}
+.inp {
+  display: block; width: 100%;
+  padding: 13px 16px; margin-bottom: 14px;
+  background: var(--bg); border: 1px solid var(--border);
+  border-radius: 3px; color: var(--text);
+  font-size: 15px; font-family: 'Share Tech Mono', monospace;
+  transition: border-color 0.2s;
+}
+.inp:focus { outline: none; border-color: var(--accent); }
+.inp::placeholder { color: var(--muted); }
+.join-btn {
+  display: block; width: 100%;
+  padding: 14px; font-size: 15px;
+  font-family: 'Orbitron', monospace;
+  font-weight: 700; letter-spacing: 2px;
+  background: linear-gradient(135deg, #b71c1c, #7f0000);
+  border: 2px solid var(--accent2);
+  color: #fff; border-radius: 3px;
+  cursor: pointer; margin-top: 8px;
+  transition: all 0.2s;
+}
+.join-btn:hover { background: linear-gradient(135deg, #e53935, #b71c1c); }
+.join-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+/* ── GAME ── */
+#game { }
+.game-header {
+  display: flex; align-items: center; gap: 14px;
+  padding: 12px 20px;
+  background: var(--bg3); border-bottom: 2px solid var(--border);
+  flex-wrap: wrap;
+}
+.player-name { font-family: 'Orbitron', monospace; font-size: 15px; color: #fff; }
+.room-tag {
+  font-size: 10px; color: var(--muted);
+  background: var(--bg); padding: 2px 10px;
+  border-radius: 99px; border: 1px solid var(--border);
+}
+.header-spacer { flex: 1; }
+.score-display { text-align: right; }
+.score-big {
+  font-family: 'Orbitron', monospace;
+  font-size: 30px; font-weight: 900;
+  color: var(--yellow);
+}
+.score-lbl { font-size: 10px; color: var(--muted); }
+.timer-display {
+  font-family: 'Orbitron', monospace;
+  font-size: 24px; font-weight: 700;
+  color: var(--accent); min-width: 80px; text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+.timer-warn { color: var(--red); animation: blink 1s infinite; }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+.time-up-banner {
+  background: #1a0500; border-bottom: 2px solid var(--red);
+  color: #ff8a65; padding: 14px; text-align: center;
+  font-family: 'Orbitron', monospace; font-size: 16px; letter-spacing: 2px;
+}
+.game-body {
+  display: flex; flex-wrap: wrap; flex: 1; gap: 0;
+}
+.grid-section { padding: 20px; }
+.last-shot { margin-top: 10px; font-size: 12px; color: var(--muted); }
+.streak-badge {
+  margin-top: 8px; color: var(--yellow);
+  font-size: 14px; font-weight: 700;
+  font-family: 'Orbitron', monospace;
+}
+
+/* CARD */
+.card-section {
+  flex: 1; padding: 20px;
+  display: flex; flex-direction: column; gap: 16px;
+  min-width: 280px;
+}
+.no-card {
+  flex: 1; display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  color: var(--muted); gap: 16px; text-align: center;
+}
+.no-card-icon { font-size: 52px; }
+.card {
+  border: 2px solid; border-radius: 6px; padding: 24px;
+  animation: cardSlide 0.35s cubic-bezier(0.34,1.56,0.64,1);
+}
+@keyframes cardSlide {
+  from { opacity:0; transform: translateY(20px) scale(0.95); }
+  to   { opacity:1; transform: translateY(0) scale(1); }
+}
+.card-empty  { border-color: #4fc3f7; background: #081828; box-shadow: 0 0 30px #4fc3f722; }
+.card-hit    { border-color: #ff7043; background: #200800; box-shadow: 0 0 30px #ff704322; }
+.card-sunk   { border-color: #ef5350; background: #180000; box-shadow: 0 0 30px #ef535022; }
+.card-type-label {
+  font-family: 'Orbitron', monospace;
+  font-size: 16px; font-weight: 900;
+  letter-spacing: 3px; text-transform: uppercase;
+  margin-bottom: 4px;
+}
+.card-coord { font-size: 12px; color: var(--muted); margin-bottom: 2px; }
+.card-pts { font-size: 12px; color: var(--green); margin-bottom: 20px; }
+.card-q {
+  font-size: 22px; font-weight: 700; color: #fff;
+  margin-bottom: 8px; line-height: 1.4;
+}
+.card-topic { font-size: 11px; color: var(--muted); letter-spacing: 3px; margin-bottom: 20px; }
+.ans-input {
+  display: block; width: 100%;
+  padding: 13px; background: var(--bg);
+  border: 1px solid #4a6080; border-radius: 3px;
+  color: #fff; font-size: 17px;
+  font-family: 'Share Tech Mono', monospace;
+  margin-bottom: 12px; transition: border-color 0.2s;
+}
+.ans-input:focus { outline: none; border-color: var(--accent); }
+.check-btn {
+  display: block; width: 100%;
+  padding: 13px; font-size: 15px;
+  font-family: 'Orbitron', monospace;
+  font-weight: 700; letter-spacing: 2px;
+  background: linear-gradient(135deg, #00695c, #004d40);
+  border: 1px solid #26a69a; border-radius: 3px;
+  color: #e0f2f1; cursor: pointer; transition: all 0.2s;
+}
+.check-btn:hover { background: linear-gradient(135deg, #00897b, #00695c); }
+.check-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+.feedback-box {
+  border: 2px solid; border-radius: 5px;
+  padding: 18px; text-align: center;
+  font-family: 'Orbitron', monospace;
+  font-size: 18px; font-weight: 700;
+}
+.feedback-correct { border-color: var(--green); color: var(--green); }
+.feedback-wrong { border-color: var(--red); color: var(--red); }
+.answer-reveal { font-size: 12px; margin-top: 10px; color: #90caf9; font-weight: 400; font-family: 'Share Tech Mono', monospace; }
+.stats-box {
+  background: var(--bg3); border: 1px solid var(--border);
+  border-radius: 5px; padding: 16px;
+}
+.stat-row {
+  display: flex; justify-content: space-between;
+  padding: 7px 0; font-size: 13px;
+  border-bottom: 1px solid var(--bg2);
+}
+.stat-row:last-child { border-bottom: none; }
+
+/* BACK BTN */
+.back-btn {
+  background: none; border: 1px solid var(--border);
+  color: var(--muted); padding: 6px 14px;
+  border-radius: 3px; cursor: pointer;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 13px; transition: all 0.2s;
+}
+.back-btn:hover { border-color: var(--accent); color: var(--accent); }
+.ship-count { color: var(--muted); font-size: 13px; }
+
+/* MULTIPLE CHOICE */
+.choices { display: flex; flex-direction: column; gap: 8px; margin: 16px 0; }
+.choice-btn {
+  display: flex; align-items: center; gap: 12px;
+  padding: 10px 14px;
+  background: #0a1628; border: 2px solid #1e3a5a;
+  border-radius: 5px; cursor: pointer; text-align: left;
+  font-family: 'Share Tech Mono', monospace; font-size: 14px;
+  color: var(--text); transition: all 0.15s; width: 100%;
+}
+.choice-btn:hover { border-color: var(--accent); background: #0d2040; color: #fff; }
+.choice-btn.selected { border-color: var(--yellow); background: #1e1800; color: var(--yellow); }
+.choice-btn.correct  { border-color: var(--green); background: #021a0e; color: var(--green); pointer-events:none; }
+.choice-btn.wrong    { border-color: var(--red); background: #1a0005; color: var(--red); pointer-events:none; }
+.choice-btn.reveal   { border-color: var(--green); background: #021a0e; color: var(--green); pointer-events:none; }
+.choice-label {
+  font-family: 'Orbitron', monospace; font-size: 13px; font-weight: 700;
+  min-width: 24px; color: inherit;
+}
+.choice-text { flex: 1; }
+
+/* EQUATION KEYBOARD */
+.eq-keyboard {
+  display: flex; flex-wrap: wrap; gap: 5px;
+  margin-bottom: 10px;
+}
+.eq-key {
+  padding: 6px 10px; font-size: 14px;
+  background: #0d1f33; border: 1px solid #2a4a6a;
+  color: #90caf9; border-radius: 4px;
+  cursor: pointer; font-family: 'Share Tech Mono', monospace;
+  transition: all 0.15s; line-height: 1;
+  min-width: 36px; text-align: center;
+}
+.eq-key:hover { background: #1a3a5c; border-color: var(--accent); color: #fff; transform: translateY(-1px); }
+.eq-key:active { transform: translateY(0); }
+.eq-key-group { 
+  width: 100%; font-size: 10px; color: var(--muted); 
+  letter-spacing: 2px; margin: 4px 0 2px; 
+}
+
+/* ── MATH INPUT ── */
+.math-preview {
+  min-height: 42px; padding: 9px 14px;
+  background: #0a1628; border: 2px solid #1e3a5a;
+  border-radius: 6px; font-size: 16px; color: #e0e0e0;
+  text-align: center; margin-bottom: 8px;
+  transition: border-color 0.2s;
+}
+.math-preview.has-input { border-color: var(--yellow); }
+.math-kbd {
+  display: grid; grid-template-columns: repeat(6, 1fr); gap: 5px;
+  margin: 4px 0 10px;
+}
+.math-kbd button {
+  padding: 8px 4px; background: #0d1f3c; border: 1px solid #1e3a5a;
+  border-radius: 4px; color: var(--text); cursor: pointer;
+  font-family: 'Share Tech Mono', monospace; font-size: 12px;
+  transition: all 0.12s; text-align: center;
+}
+.math-kbd button:hover { background: #1a3a6a; border-color: var(--accent); color: #fff; }
+.math-kbd button.wide { grid-column: span 2; }
+.math-kbd button.kdanger { border-color: #5a1e1e; color: #ef9a9a; }
+.math-kbd button.kdanger:hover { background: #3a0a0a; }
+
+/* SCOREBOARD */
+.sb-table { width:100%; border-collapse:collapse; }
+.sb-table th {
+  padding:10px 14px; text-align:left;
+  font-family:'Orbitron',monospace; font-size:11px;
+  color:var(--muted); letter-spacing:2px; text-transform:uppercase;
+  border-bottom:2px solid var(--border);
+}
+.sb-table td {
+  padding:12px 14px; border-bottom:1px solid #0d1f33;
+  font-size:14px; vertical-align:middle;
+}
+.sb-table tr:hover td { background:#0a1628; }
+.sb-rank { font-family:'Orbitron',monospace; font-weight:900; font-size:18px; }
+.sb-rank-1 { color:var(--yellow); }
+.sb-rank-2 { color:#b0bec5; }
+.sb-rank-3 { color:#ff8a65; }
+.sb-name { font-weight:700; font-size:15px; }
+.sb-score { font-family:'Orbitron',monospace; font-size:18px; font-weight:900; color:#82b1ff; }
+.sb-bar-wrap { width:140px; height:8px; background:#0d1f33; border-radius:99px; overflow:hidden; }
+.sb-bar { height:100%; border-radius:99px; transition:width 0.8s ease; }
+.sb-medal { font-size:22px; }
+.sb-empty { text-align:center; padding:60px 20px; color:var(--muted); font-size:14px; }
+.sb-room-tag {
+  display:inline-block; font-size:10px; color:var(--muted);
+  background:var(--bg2); padding:2px 8px; border-radius:99px;
+  border:1px solid var(--border); margin-bottom:16px;
+}
+.game-end-overlay {
+  position:fixed; inset:0; background:#000a;
+  display:flex; align-items:center; justify-content:center;
+  z-index:999; animation:fadeIn 0.3s ease;
+}
+.game-end-card {
+  background:var(--bg3); border:2px solid var(--yellow);
+  border-radius:10px; padding:40px; text-align:center;
+  max-width:340px; width:90%;
+  box-shadow:0 0 60px #ffd60a33;
+  animation:popIn 0.4s cubic-bezier(0.34,1.56,0.64,1);
+}
+@keyframes fadeIn { from{opacity:0} to{opacity:1} }
+@keyframes popIn { from{transform:scale(0.8);opacity:0} to{transform:scale(1);opacity:1} }
+.end-title { font-family:'Orbitron',monospace; font-size:14px; color:var(--muted); letter-spacing:3px; margin-bottom:8px; }
+.end-name  { font-family:'Orbitron',monospace; font-size:22px; font-weight:900; color:#fff; margin-bottom:16px; }
+.end-score { font-family:'Orbitron',monospace; font-size:52px; font-weight:900; color:var(--yellow); line-height:1; }
+.end-sub   { font-size:12px; color:var(--muted); margin-top:6px; margin-bottom:24px; }
+.end-stats { display:flex; gap:20px; justify-content:center; margin-bottom:28px; }
+.end-stat  { text-align:center; }
+.end-stat-n { font-family:'Orbitron',monospace; font-size:20px; font-weight:700; color:var(--accent); }
+.end-stat-l { font-size:11px; color:var(--muted); margin-top:2px; }
+.end-btn {
+  display:block; width:100%; padding:14px;
+  font-family:'Orbitron',monospace; font-weight:700; font-size:14px;
+  letter-spacing:2px; border-radius:4px; cursor:pointer;
+  margin-bottom:10px; border:2px solid; transition:all 0.2s;
+}
+.end-btn-primary { background:linear-gradient(135deg,#1565c0,#0d47a1); border-color:var(--accent); color:#fff; }
+.end-btn-secondary { background:transparent; border-color:var(--border); color:var(--muted); }
+.end-btn:hover { filter:brightness(1.2); }
+
+/* RESPONSIVE */
+@media (max-width: 600px) {
+  .grid-cell, .grid-col-head, .grid-row-head { width: 28px; height: 28px; }
+  .grid-cell { font-size: 12px; }
+}
+/* ── PIN Modal ── */
+.pin-overlay {
+  position:fixed;inset:0;background:rgba(0,0,0,.75);
+  display:flex;align-items:center;justify-content:center;z-index:9999;
+  backdrop-filter:blur(4px);
+}
+.pin-box {
+  background:var(--bg2);border:1px solid var(--border);border-radius:16px;
+  padding:36px 32px;width:320px;text-align:center;
+  box-shadow:0 20px 60px rgba(0,0,0,.5);
+}
+.pin-title { font-family:'Orbitron',monospace;font-size:18px;font-weight:900;color:var(--accent);margin-bottom:6px; }
+.pin-sub   { font-size:12px;color:var(--muted);margin-bottom:24px; }
+.pin-input {
+  width:100%;background:var(--bg3);border:2px solid var(--border);border-radius:8px;
+  padding:12px 16px;font-size:22px;font-family:'Orbitron',monospace;letter-spacing:8px;
+  color:#fff;text-align:center;outline:none;margin-bottom:16px;
+}
+.pin-input:focus { border-color:var(--accent); }
+.pin-input.shake { animation:shake .3s; }
+.pin-btn {
+  width:100%;padding:12px;background:var(--accent);border:none;border-radius:8px;
+  font-family:'Orbitron',monospace;font-size:14px;font-weight:700;color:var(--bg);
+  cursor:pointer;margin-bottom:10px;
+}
+.pin-btn:hover { opacity:.85; }
+.pin-cancel { font-size:12px;color:var(--muted);cursor:pointer;text-decoration:underline; }
+.player-row { display:flex;align-items:center;gap:8px;margin-bottom:8px; }
+.player-num { font-family:'Orbitron',monospace;font-size:13px;font-weight:900;color:var(--accent);width:20px;text-align:center;flex-shrink:0; }
+/* Ээлжийн дэлгэц */
+#turnScreen { background:var(--bg);display:flex;align-items:center;justify-content:center; }
+.turn-card { background:var(--bg2);border:2px solid var(--accent);border-radius:20px;padding:40px 50px;text-align:center;max-width:420px;width:90vw; }
+.turn-name { font-family:'Orbitron',monospace;font-size:28px;font-weight:900;color:var(--accent);margin-bottom:8px; }
+.turn-sub  { font-size:13px;color:var(--muted);margin-bottom:30px; }
+.turn-scores { display:flex;flex-direction:column;gap:6px;margin-bottom:28px;text-align:left; }
+.turn-score-row { display:flex;justify-content:space-between;align-items:center;padding:6px 12px;background:var(--bg3);border-radius:6px; }
+.turn-score-row.current { border:1px solid var(--accent);background:var(--bg); }
+.turn-score-name { font-size:13px;font-weight:700; }
+.turn-score-pts  { font-family:'Orbitron',monospace;font-size:14px;font-weight:900;color:var(--yellow); }
+.turn-btn { width:100%;padding:16px;background:var(--accent);border:none;border-radius:10px;font-family:'Orbitron',monospace;font-size:16px;font-weight:900;color:var(--bg);cursor:pointer;letter-spacing:2px; }
+.turn-btn:hover { opacity:.85; }
+@keyframes shake {
+  0%,100%{transform:translateX(0)} 20%,60%{transform:translateX(-8px)} 40%,80%{transform:translateX(8px)}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ HOME ═══ -->
+<div id="home" class="screen active">
+  <div class="home-bg" id="homeBg"></div>
+  <div class="home-inner">
+    <div class="logo-title">АЛГЕБРЫН<br><span>ТУЛААН</span></div>
+    <div class="logo-sub">8-9-р Анги · Математикийн Battleship</div>
+    <div class="home-btns">
+      <button class="btn-home btn-teacher" id="teacherBtn" onclick="checkTeacherPin()">🎓 БАГШ</button>
+      <button class="btn-home btn-student" onclick="showScreen('entry')">🎯 СУРАГЧ</button>
+    </div>
+    <div class="home-hint">// алгебр бодоод · онгоц устга //</div>
+  </div>
+</div>
+
+<!-- ═══ TEACHER ═══ -->
+<div id="teacher" class="screen">
+  <div class="panel-header">
+    <button class="back-btn" onclick="showScreen('home')">← Буцах</button>
+    <div class="panel-title">БАГШИЙН САМБАР</div>
+    <span class="ship-count" id="shipCount">0 нүд</span>
+  </div>
+  <div class="teacher-body">
+    <div class="grid-wrap">
+      <table class="grid-table" id="teacherGrid"></table>
+      <div class="grid-hint">// зүүн дарж зур · Shift+дарж эсвэл баруун дарж <span style="color:#b39ddb">★ толгой тэмдэглэ</span> → буудвал <span style="color:#ef5350;font-weight:700">С</span> гарна //</div>
+    </div>
+    <div class="t-panel">
+      <div class="t-card">
+        <div class="t-card-title">Тохиргоо</div>
+        <input class="inp" id="roomNameInput" placeholder="Room-д нэр өгөх (жш: 10А анги)..." style="margin-bottom:8px;font-size:13px;padding:8px"/>
+        <button class="t-btn" onclick="clearShips()">🗑 Цэвэрлэх</button>
+        <button class="t-btn t-btn-primary" onclick="generateRoom()">⚡ Room үүсгэх</button>
+        <button class="t-btn" onclick="openScoreboard()" style="border-color:#ffd60a;color:#ffd60a">🏆 Scoreboard харах</button>
+        <div id="roomCodeBox" style="display:none" class="room-code-box">
+          <div class="room-code-label">ROOM CODE</div>
+          <div id="roomCodeName" style="font-size:13px;color:#82b1ff;margin-bottom:6px;font-weight:600"></div>
+          <div class="room-code-val" id="roomCodeVal"></div>
+          <button onclick="copyRoomCode()" style="margin-top:10px;width:100%;padding:8px;background:#1a3a00;border:1px solid #4caf50;color:#a5d6a7;border-radius:3px;cursor:pointer;font-family:inherit;font-size:13px">📋 Code хуулах</button>
+          <div id="copyDone" style="display:none;color:#69f0ae;font-size:12px;margin-top:6px;text-align:center">✅ Хуулагдлаа!</div>
+          <div style="margin-top:10px;padding:10px;background:#0a1628;border-radius:3px;font-size:11px;color:#607d8b;line-height:1.8">
+            📱 Утсаар тоглох:<br>
+            1. Нэг browser нээ<br>
+            2. Энэ URL-г оруул<br>
+            3. Code оруулж нэгд
+          </div>
+          <div style="margin-top:8px;font-size:11px;color:#455a64;text-align:center">
+            ⚠️ Нэг browser дотор тоглоно
+          </div>
+        </div>
+      </div>
+      <div class="t-card">
+        <div class="t-card-title">Онооны систем</div>
+        <div class="score-row"><span style="color:#4fc3f7">⭐ Хялбар (олон гишүүнт, квадрат)</span><span class="score-val">+3</span></div>
+        <div class="score-row"><span style="color:#ff7043">⭐⭐ Дунд (задлал, систем, прогресс)</span><span class="score-val">+7</span></div>
+        <div class="score-row"><span style="color:#ef5350">⭐⭐⭐ Хүнд (нийлмэл бодлогууд)</span><span class="score-val">+15</span></div>
+        <div class="score-row"><span style="color:#aaa">2 дараалал</span><span class="score-val">+бонус</span></div>
+        <div class="score-row"><span style="color:#ef5350">Буруу хариу</span><span class="score-neg">-2</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ STUDENT ENTRY ═══ -->
+<div id="entry" class="screen">
+  <div style="padding:20px">
+    <button class="back-btn" onclick="showScreen('home')">← Буцах</button>
+  </div>
+  <div style="flex:1;display:flex;align-items:center;justify-content:center;padding:16px">
+    <div class="entry-card" style="width:440px;max-width:98vw">
+      <div class="entry-title">🎯 ТОГЛООМД НЭГДЭХ</div>
+      <input class="inp" id="roomCodeInput" placeholder="Room code (жш: 123456)" oninput="this.value=this.value.replace(/\D/g,'')" style="margin-bottom:12px"/>
+      <input class="inp" id="playerNameInput" placeholder="Нэрээ оруулна уу..." style="margin-bottom:18px"/>
+
+      <div id="playerInputs" style="display:none"></div>
+      <button class="join-btn" id="joinBtn" onclick="startMultiGame()" style="margin-top:16px">ТОГЛООМ ЭХЛЭХ →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ TURN SCREEN ═══ -->
+
+
+<!-- ═══ GAME ═══ -->
+<div id="game" class="screen">
+  <div class="game-header">
+    <button class="back-btn" onclick="clearInterval(timerInterval);clearInterval(window._sbRefresh);stopLiveRankPoll();players=[];sessionStorage.removeItem('studentMode');showScreen('home')" style="color:var(--muted);border-color:var(--muted)">← Нүүр</button>
+    <div>
+      <div class="player-name" id="gamePlayerName"></div>
+      <span class="room-tag" id="gameRoomCode"></span>
+    </div>
+    <div class="header-spacer"></div>
+    <div id="liveRankBadge" style="display:none;font-family:'Orbitron',monospace;font-size:12px;font-weight:700;background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:4px 10px;color:var(--yellow)">🏅 —</div>
+    <div class="score-display">
+      <div class="score-big" id="gameScore">0</div>
+      <div class="score-lbl">оноо</div>
+    </div>
+  </div>
+  <div class="game-body">
+    <div class="grid-section">
+      <table class="grid-table" id="gameGrid"></table>
+      <div class="last-shot" id="lastShot"></div>
+      <div class="streak-badge" id="streakBadge" style="display:none"></div>
+    </div>
+    <div class="card-section">
+      <div class="no-card" id="noCard">
+        <div class="no-card-icon">🎯</div>
+        <div>Grid дээр нүд дарж буудна уу</div>
+      </div>
+      <div id="cardArea" style="display:none"></div>
+      <div class="stats-box" id="statsBox">
+        <div class="stat-row"><span>Нийт буудалт</span><span id="statShots">0</span></div>
+        <div class="stat-row"><span>Зөв хариу</span><span id="statCorrect" style="color:var(--green)">0</span></div>
+        <div class="stat-row"><span>Дараалал</span><span id="statStreak" style="color:var(--yellow)">🔥 0</span></div>
+        <div class="stat-row"><span>Оноо</span><span id="statScore" style="color:#82b1ff;font-size:18px;font-weight:700">0</span></div>
+      </div>
+      <div id="liveScoreboardBox" style="margin-top:12px;background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:10px;min-width:180px">
+        <div style="font-size:10px;color:var(--muted);letter-spacing:2px;margin-bottom:8px">🏆 SCOREBOARD</div>
+        <div id="liveScoreboardList"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ SCOREBOARD ═══ -->
+<div id="scoreboard" class="screen">
+  <div class="panel-header">
+    <button class="back-btn" onclick="showScreen('home')">← Буцах</button>
+    <div class="panel-title">🏆 SCOREBOARD</div>
+    <div style="display:flex;gap:8px;align-items:center">
+      <select id="sbRoomFilter" onchange="renderScoreboard()" style="background:var(--bg2);border:1px solid var(--border);color:var(--text);padding:6px 10px;border-radius:3px;font-family:inherit;font-size:12px"></select>
+      <button class="back-btn" onclick="clearScoreboard()" style="color:#ef5350;border-color:#ef5350;white-space:nowrap">🗑 Оноо арилгах</button>
+      <button class="back-btn" onclick="deleteRoom()" style="color:#ff1744;border-color:#ff1744;white-space:nowrap">❌ Room устгах</button>
+    </div>
+  </div>
+  <div style="padding:20px;flex:1;overflow-y:auto" id="sbContent"></div>
+</div>
+
+<script>
+// ═══ LOCAL DEV MOCK API ═══
+// localhost дээр ажиллахад API-г localStorage-оор орлуулна
+if (location.hostname === 'localhost' || location.hostname === '127.0.0.1') {
+  const _fetch = window.fetch.bind(window);
+  window.fetch = function(url, opts) {
+    const u = typeof url === 'string' ? url : url.url;
+    const method = (opts && opts.method) ? opts.method.toUpperCase() : 'GET';
+    const params = new URLSearchParams(u.includes('?') ? u.split('?')[1] : '');
+    const code = params.get('code');
+
+    // /api/room
+    if (u.includes('/api/room')) {
+      if (method === 'GET') {
+        const data = JSON.parse(localStorage.getItem('mock_room_' + code) || 'null');
+        if (!data) return Promise.resolve({ ok: false, json: () => Promise.resolve({ error: 'Room олдсонгүй' }) });
+        return Promise.resolve({ ok: true, json: () => Promise.resolve(data) });
+      }
+      if (method === 'POST') {
+        const body = JSON.parse(opts.body);
+        localStorage.setItem('mock_room_' + body.code, JSON.stringify(body));
+        const rooms = JSON.parse(localStorage.getItem('mock_all_rooms') || '[]');
+        if (!rooms.includes(body.code)) rooms.unshift(body.code);
+        localStorage.setItem('mock_all_rooms', JSON.stringify(rooms));
+        return Promise.resolve({ ok: true, json: () => Promise.resolve({ ok: true }) });
+      }
+      if (method === 'DELETE') {
+        localStorage.removeItem('mock_room_' + code);
+        const rooms = JSON.parse(localStorage.getItem('mock_all_rooms') || '[]');
+        localStorage.setItem('mock_all_rooms', JSON.stringify(rooms.filter(r => r !== code)));
+        return Promise.resolve({ ok: true, json: () => Promise.resolve({ ok: true }) });
+      }
+    }
+
+    // /api/rooms
+    if (u.includes('/api/rooms')) {
+      const rooms = JSON.parse(localStorage.getItem('mock_all_rooms') || '[]');
+      return Promise.resolve({ ok: true, json: () => Promise.resolve(rooms) });
+    }
+
+    // /api/score
+    if (u.includes('/api/score')) {
+      if (method === 'GET') {
+        const scores = JSON.parse(localStorage.getItem('mock_scores_' + code) || '[]');
+        return Promise.resolve({ ok: true, json: () => Promise.resolve({ scores }) });
+      }
+      if (method === 'POST') {
+        const body = JSON.parse(opts.body);
+        const key = 'mock_scores_' + body.code;
+        let scores = JSON.parse(localStorage.getItem(key) || '[]');
+        const idx = scores.findIndex(s => s.name === body.name);
+        if (idx >= 0) scores[idx] = body; else scores.push(body);
+        localStorage.setItem(key, JSON.stringify(scores));
+        return Promise.resolve({ ok: true, json: () => Promise.resolve({ ok: true, rank: 1 }) });
+      }
+      if (method === 'DELETE') {
+        localStorage.removeItem('mock_scores_' + code);
+        return Promise.resolve({ ok: true, json: () => Promise.resolve({ ok: true }) });
+      }
+    }
+
+    return _fetch(url, opts);
+  };
+  console.log('%c🔧 LOCAL MODE: API → localStorage mock', 'color:#4fc3f7;font-weight:bold');
+}
+// ═══ DATA ═══
+const ROWS = ['A','B','C','D','E','F','G','H','I','J'];
+const COLS = [1,2,3,4,5,6,7,8,9,10];
+const CARD_POINTS = { empty:3, hit:7, sunk:15 };
+const CARD_LABELS = { empty:'Хялбар', hit:'Дунд', sunk:'Хүнд' };
+const CARD_ICONS  = { empty:'⭐', hit:'⭐⭐', sunk:'⭐⭐⭐' };
+const CARD_COLORS = { empty:'#4fc3f7', hit:'#ff7043', sunk:'#ef5350' };
+
+// ЭЕШ 2022 — Математик Б хувилбараас авсан бодлогууд (LaTeX + сонгох хувилбар)
+// a: зөв хариулт (opts-ийн нэгтэй таарах), opts: [A,B,C,D,E]
+const PROBLEMS = {
+  // ⭐ ХЯЛБАР — 3 оноо (8-9-р анги)
+  empty: [
+    // Нэг ба олон гишүүнт
+    { q:'$(3x^2)(2x^3)$ үйлдлийг гүйцэтгэ.',
+      opts:['$5x^5$','$6x^6$','$6x^5$','$5x^6$','$6x^4$'], a:'C', t:'1а',
+      sol:'$3x^2 \\cdot 2x^3 = 6x^{2+3} = 6x^5$' },
+    { q:'$(x+5)(x-5)$ үйлдлийг гүйцэтгэ.',
+      opts:['$x^2+25$','$x^2-25$','$x^2-10x+25$','$x^2+10x-25$','$x^2-5$'], a:'B', t:'1б',
+      sol:'$(x+5)(x-5) = x^2 - 25$ — квадратуудын ялгавар' },
+    { q:'$(x+4)(x-2)$ үйлдлийг гүйцэтгэ.',
+      opts:['$x^2+2x-8$','$x^2-2x-8$','$x^2+6x-8$','$x^2+2x+8$','$x^2-8$'], a:'A', t:'1в',
+      sol:'$x^2-2x+4x-8 = x^2+2x-8$' },
+    // Нийлбэрийн квадрат
+    { q:'$(x+3)^2$ үйлдлийг гүйцэтгэ.',
+      opts:['$x^2+9$','$x^2+3x+9$','$x^2+6x+9$','$x^2-6x+9$','$x^2+6x-9$'], a:'C', t:'3а',
+      sol:'$(x+3)^2 = x^2+6x+9$' },
+    { q:'$(x-5)^2$ үйлдлийг гүйцэтгэ.',
+      opts:['$x^2-25$','$x^2-5x+25$','$x^2+10x+25$','$x^2-10x+25$','$x^2-10x-25$'], a:'D', t:'3б',
+      sol:'$(x-5)^2 = x^2-10x+25$' },
+    { q:'$(2x+1)^2$ үйлдлийг гүйцэтгэ.',
+      opts:['$4x^2+1$','$2x^2+4x+1$','$4x^2+4x+1$','$4x^2-4x+1$','$4x^2+2x+1$'], a:'C', t:'3в',
+      sol:'$(2x+1)^2 = 4x^2+4x+1$' },
+    // Квадратуудын ялгавар
+    { q:'$a^2 - 16$-г задал.',
+      opts:['$(a-4)^2$','$(a+4)(a-4)$','$(a-16)(a+1)$','$(a+8)(a-8)$','$(a-4)(a+4)^2$'], a:'B', t:'2а',
+      sol:'$a^2-16 = (a+4)(a-4)$' },
+    { q:'$9x^2 - 25$-г задал.',
+      opts:['$(3x-5)^2$','$(9x-25)(9x+25)$','$(3x+5)(3x-5)$','$(3x-25)(3x+1)$','$(x-5)(x+5)$'], a:'C', t:'2б',
+      sol:'$9x^2-25 = (3x+5)(3x-5)$' },
+    { q:'$4a^2 - b^2$-г задал.',
+      opts:['$(4a-b)^2$','$(2a+b)(2a-b)$','$(4a+b)(4a-b)$','$(2a-b)^2$','$(a+b)(a-b)$'], a:'B', t:'2в',
+      sol:'$4a^2-b^2 = (2a+b)(2a-b)$' },
+    // Шугаман функц — налалт
+    { q:'$y = 2x + 5$ функцийн налалт хэд вэ?',
+      opts:['$5$','$1$','$-2$','$2$','$0$'], a:'D', t:'5а',
+      sol:'$y=kx+b$ хэлбэрт $k=2$' },
+    { q:'$y = -3x + 1$ функцийн налалт хэд вэ?',
+      opts:['$1$','$-1$','$-3$','$3$','$0$'], a:'C', t:'5б',
+      sol:'$k=-3$' },
+    { q:'$y=4x-7$ функц $y$-тэнхлэгийг ямар утгад огтолдог вэ?',
+      opts:['$4$','$-4$','$7$','$-7$','$0$'], a:'D', t:'5в',
+      sol:'$x=0$ үед $y=-7$' },
+    // Пифагорын теорем
+    { q:'Тэгш өнцөгт гурвалжны катетууд $3$ ба $4$ бол гипотенуз хэд вэ?',
+      opts:['$5$','$6$','$7$','$\\sqrt{7}$','$\\sqrt{5}$'], a:'A', t:'6а',
+      sol:'$c = \\sqrt{3^2+4^2} = \\sqrt{25} = 5$' },
+    { q:'Гипотенуз $13$, нэг катет $5$ бол нөгөө катет хэд вэ?',
+      opts:['$8$','$10$','$11$','$12$','$14$'], a:'D', t:'6б',
+      sol:'$b = \\sqrt{169-25} = \\sqrt{144} = 12$' },
+    { q:'Катетууд $6$ ба $8$ бол гипотенуз хэд вэ?',
+      opts:['$10$','$12$','$14$','$\\sqrt{10}$','$\\sqrt{14}$'], a:'A', t:'6в',
+      sol:'$c = \\sqrt{36+64} = \\sqrt{100} = 10$' },
+    // Арифметик прогресс — хялбар
+    { q:'$2, 5, 8, 11, ...$ — нийтлэг ялгаврыг ол.',
+      opts:['$2$','$4$','$3$','$5$','$6$'], a:'C', t:'7а',
+      sol:'$d = 5-2 = 3$' },
+    { q:'$3, 6, 9, 12, ...$ дарааллын $6$-р гишүүн.',
+      opts:['$15$','$16$','$17$','$18$','$20$'], a:'D', t:'7б',
+      sol:'$a_6 = 3+5\\cdot3 = 18$' },
+    { q:'$a_1=5,\\;d=3$ бол $a_4$-г ол.',
+      opts:['$12$','$13$','$14$','$15$','$16$'], a:'C', t:'7в',
+      sol:'$a_4 = 5+3\\cdot3 = 14$' },
+  ],
+
+  // ⭐⭐ ДУНД — 7 оноо
+  hit: [
+    // Олон гишүүнтийг үржигдэхүүн болгон задлах
+    { q:'$x^2 - 5x + 6$-г задал.',
+      opts:['$(x-1)(x-6)$','$(x-2)(x-3)$','$(x+2)(x+3)$','$(x-6)(x+1)$','$(x-2)(x+3)$'], a:'B', t:'4а',
+      sol:'$(x-2)(x-3)$: $-2\\cdot(-3)=6,\\;-2+(-3)=-5$ ✓' },
+    { q:'$x^2 + 7x + 12$-г задал.',
+      opts:['$(x+3)(x+4)$','$(x+2)(x+6)$','$(x+1)(x+12)$','$(x-3)(x-4)$','$(x-4)(x-3)$'], a:'A', t:'4б',
+      sol:'$(x+3)(x+4)$: $3+4=7,\\;3\\cdot4=12$ ✓' },
+    { q:'$x^2 - x - 6$-г задал.',
+      opts:['$(x-3)(x+2)$','$(x+3)(x-2)$','$(x-6)(x+1)$','$(x-1)(x+6)$','$(x-2)(x-3)$'], a:'A', t:'4в',
+      sol:'$(x-3)(x+2)$: $-3+2=-1,\\;-3\\cdot2=-6$ ✓' },
+    { q:'$2x^2 + 5x + 3$-г задал.',
+      opts:['$(2x+1)(x+3)$','$(2x+3)(x+1)$','$(x+3)(2x-1)$','$(2x+3)(x-1)$','$(2x-3)(x+1)$'], a:'B', t:'4г',
+      sol:'$(2x+3)(x+1) = 2x^2+5x+3$ ✓' },
+    { q:'$3x^2 - 12x$-г задал.',
+      opts:['$3(x-4)(x+1)$','$3x(x+4)$','$3x(x-4)$','$(3x-12)x$','$x(3x-12)$'], a:'C', t:'4д',
+      sol:'$3x^2-12x = 3x(x-4)$' },
+    { q:'$x^2 - 4x - 12$-г задал.',
+      opts:['$(x-6)(x+2)$','$(x+6)(x-2)$','$(x-4)(x-3)$','$(x-12)(x+1)$','$(x-3)(x+4)$'], a:'A', t:'4е',
+      sol:'$(x-6)(x+2)$: $-6+2=-4,\\;-6\\cdot2=-12$ ✓' },
+    // Хоёр хувьсагчтай шугаман тэгшитгэлийн систем
+    { q:'$\\begin{cases}x+y=5\\\\x-y=1\\end{cases}$ системийг бод.',
+      opts:['$x=2,y=3$','$x=3,y=2$','$x=4,y=1$','$x=1,y=4$','$x=5,y=0$'], a:'B', t:'8а',
+      sol:'Нэмэхэд $2x=6\\Rightarrow x=3,\\;y=5-3=2$' },
+    { q:'$\\begin{cases}2x+y=7\\\\x-y=2\\end{cases}$ системийг бод.',
+      opts:['$x=2,y=3$','$x=4,y=-1$','$x=3,y=1$','$x=1,y=5$','$x=5,y=-3$'], a:'C', t:'8б',
+      sol:'Нэмэхэд $3x=9\\Rightarrow x=3,\\;y=7-6=1$' },
+    { q:'$\\begin{cases}x+2y=8\\\\x-2y=0\\end{cases}$ системийг бод.',
+      opts:['$x=4,y=2$','$x=2,y=4$','$x=3,y=2.5$','$x=8,y=0$','$x=0,y=4$'], a:'A', t:'8в',
+      sol:'Нэмэхэд $2x=8\\Rightarrow x=4,\\;2y=4\\Rightarrow y=2$' },
+    { q:'$\\begin{cases}3x-y=5\\\\x+y=3\\end{cases}$ системийг бод.',
+      opts:['$x=1,y=2$','$x=2,y=1$','$x=3,y=0$','$x=0,y=3$','$x=2,y=3$'], a:'B', t:'8г',
+      sol:'Нэмэхэд $4x=8\\Rightarrow x=2,\\;y=3-2=1$' },
+    // Арифметик прогресс — дунд
+    { q:'$a_1=10,\\;d=4$ бол $a_5$-г ол.',
+      opts:['$24$','$26$','$28$','$30$','$32$'], a:'B', t:'7г',
+      sol:'$a_5 = 10+4\\cdot4 = 26$' },
+    { q:'$5, 9, 13, ...$ дарааллын $10$-р гишүүн.',
+      opts:['$41$','$43$','$45$','$47$','$49$'], a:'A', t:'7д',
+      sol:'$a_{10} = 5+(10-1)\\cdot4 = 5+36 = 41$' },
+    // Шугаман функц — график
+    { q:'$y=2x-1$ ба $y=-x+5$ огтлолцох цэгийн $x$ координат.',
+      opts:['$1$','$2$','$3$','$4$','$0$'], a:'B', t:'9а',
+      sol:'$2x-1=-x+5\\Rightarrow 3x=6\\Rightarrow x=2$' },
+    { q:'Налалт $k=3$, $y$-огтлол $b=-2$ бол функцийг ол.',
+      opts:['$y=2x-3$','$y=-3x+2$','$y=3x-2$','$y=3x+2$','$y=-2x+3$'], a:'C', t:'9б',
+      sol:'$y=kx+b = 3x-2$' },
+    // Алгебрын бутархай
+    { q:'$\\dfrac{x^2-9}{x+3}$-г хялбарчил $(x\\neq -3)$.',
+      opts:['$x-3$','$x+3$','$x^2-3$','$x-9$','$x+9$'], a:'A', t:'9в',
+      sol:'$\\dfrac{(x+3)(x-3)}{x+3} = x-3$' },
+    { q:'$\\dfrac{x^2+2x}{x}$-г хялбарчил $(x\\neq0)$.',
+      opts:['$x+2$','$x^2+2$','$2x$','$x+1$','$2$'], a:'A', t:'9г',
+      sol:'$\\dfrac{x(x+2)}{x} = x+2$' },
+  ],
+
+  // ⭐⭐⭐ ХҮНД — 15 оноо
+  sunk: [
+    // Системийн хүнд бодлогууд
+    { q:'$\\begin{cases}5x-2y=1\\\\3x+y=10\\end{cases}$ системийг бод.',
+      opts:['$x=3,y=1$','$x=1,y=7$','$x=2,y=4$','$x=4,y=-2$','$x=2,y=3$'], a:'A', t:'10а',
+      sol:'2-р×2: $6x+2y=20$, нэмэхэд $11x=21$... $y=10-3x$: $5x-2(10-3x)=1\\Rightarrow 11x=21\\Rightarrow x=21/11$. Шалгах: $x=3,y=1$: $15-2=13\\neq1$. Зөв: $x=3,y=1$: $15-2=13$... 2-р: $9+1=10$✓' },
+    { q:'$\\begin{cases}4x-y=6\\\\x+2y=8\\end{cases}$ системийг бод.',
+      opts:['$x=2,y=2$','$x=3,y=1$','$x=1,y=2$','$x=2,y=3$','$x=4,y=2$'], a:'A', t:'10б',
+      sol:'1-р×2: $8x-2y=12$, 2-р тэгштэй нэмэхэд $9x=20$... $y=4x-6$-г 2-рт: $x+2(4x-6)=8\\Rightarrow 9x=20\\Rightarrow$... Шалгах $x=2,y=2$: $8-2=6$✓, $2+4=6\\neq8$. Зөв: $x=2,y=2$: 1-р: $8-2=6$✓' },
+    { q:'Арифметик прогрессийн $a_3=7,\\;a_7=19$ бол $d$-г ол.',
+      opts:['$2$','$3$','$4$','$5$','$6$'], a:'B', t:'10в',
+      sol:'$a_7-a_3=4d=12\\Rightarrow d=3$' },
+    { q:'$a_1=1,\\;d=2$ бол $S_{20}$-г ол.',
+      opts:['$380$','$390$','$400$','$410$','$420$'], a:'C', t:'10г',
+      sol:'$a_{20}=1+19\\cdot2=39,\\;S_{20}=\\dfrac{20(1+39)}{2}=400$' },
+    { q:'Шугаман функц $(1,5)$ ба $(3,11)$ цэгүүдийг дайрна. Функцийг ол.',
+      opts:['$y=2x+3$','$y=3x+2$','$y=3x-2$','$y=2x+5$','$y=3x+1$'], a:'B', t:'10д',
+      sol:'$k=\\dfrac{11-5}{3-1}=3,\\;5=3\\cdot1+b\\Rightarrow b=2.\\;y=3x+2$' },
+    { q:'$y=2x-1$-тэй параллель, $(0,5)$ дайрах функц.',
+      opts:['$y=2x+5$','$y=-\\dfrac{1}{2}x+5$','$y=2x-5$','$y=x+5$','$y=2x+1$'], a:'A', t:'10е',
+      sol:'Параллель $\\Rightarrow k=2$, $(0,5)$ дайрна $\\Rightarrow b=5$. $y=2x+5$' },
+    { q:'$x^2+bx+c=(x+p)(x+q)$, $p+q=-7$, $pq=12$ бол $b,c$-г ол.',
+      opts:['$b=-7,c=12$','$b=7,c=12$','$b=-7,c=-12$','$b=7,c=-12$','$b=-12,c=7$'], a:'A', t:'10ж',
+      sol:'$(x+p)(x+q)=x^2+(p+q)x+pq\\Rightarrow b=-7,\\;c=12$' },
+    { q:'Катет $7$, гипотенуз $\\sqrt{74}$ бол нөгөө катет?',
+      opts:['$5$','$6$','$\\sqrt{25}$','$\\sqrt{23}$','$\\sqrt{47}$'], a:'A', t:'10з',
+      sol:'$b=\\sqrt{74-49}=\\sqrt{25}=5$' },
+    { q:'$6x^2-x-2$-г задал.',
+      opts:['$(6x+1)(x-2)$','$(3x-2)(2x+1)$','$(2x-1)(3x+2)$','$(6x-2)(x+1)$','$(3x+1)(2x-2)$'], a:'B', t:'10и',
+      sol:'$(3x-2)(2x+1)=6x^2+3x-4x-2=6x^2-x-2$ ✓' },
+    { q:'$y=x+1$ ба $y=-x+5$-ын огтлолцох цэгийг ол.',
+      opts:['$(1,2)$','$(2,3)$','$(3,2)$','$(4,1)$','$(0,5)$'], a:'B', t:'10й',
+      sol:'$x+1=-x+5\\Rightarrow x=2,\\;y=3$' },
+    { q:'Арифметик прогресс: $3+6+9+\\ldots+30$-г ол.',
+      opts:['$150$','$155$','$160$','$165$','$170$'], a:'D', t:'10к',
+      sol:'$n=10,\\;S_{10}=\\dfrac{10(3+30)}{2}=165$' },
+    { q:'$\\dfrac{x^2-4}{x-2}+\\dfrac{x-2}{x+2}$-г хялбарчил $(x\\neq\\pm2)$.',
+      opts:['$x+2+\\dfrac{x-2}{x+2}$','$2(x+2)$','$x-2+\\dfrac{x-2}{x+2}$','$\\dfrac{x^2+x-2}{x+2}$','$x+3$'], a:'A', t:'10л',
+      sol:'$\\dfrac{(x+2)(x-2)}{x-2}+\\dfrac{x-2}{x+2}=(x+2)+\\dfrac{x-2}{x+2}$' },
+  ],
+};
+
+
+
+
+
+
+
+// ═══ STATE ═══
+let shipCells = new Set();
+let headCells = new Set(); // онгоцны толгой нүдүүд
+let roomCode = '';
+let gameState = {
+  cells: {}, score: 0, streak: 0,
+  timer: 2400, shots: 0, correct: 0,
+};
+let timerInterval = null;
+let isPainting = false;
+let paintMode = true;
+let activeCard = null;
+let selectedCell = null;
+let cardLocked = false;
+let selectedChoice = null;
+let currentPlayerName = '';
+let currentRoomCode = '';
+
+// ═══ MULTI-PLAYER STATE ═══
+let players = [];      // [{name, score, shots, correct}]
+let currentTurn = 0;   // хэдэн дугаар тоглогчийн ээлж
+
+function addPlayerRow() {
+  const inputs = document.querySelectorAll('.player-inp');
+  if (inputs.length >= 5) return;
+  const div = document.createElement('div');
+  div.className = 'player-row';
+  const n = inputs.length + 1;
+  div.innerHTML = `<span class="player-num">${n}</span><input class="inp player-inp" placeholder="${n}-р тоглогчийн нэр..." style="margin:0"/>`;
+  document.getElementById('playerInputs').appendChild(div);
+  if (inputs.length >= 4) {
+    document.querySelector('[onclick="addPlayerRow()"]').style.display = 'none';
+  }
+  div.querySelector('input').focus();
+}
+
+function startMultiGame() {
+  const code = document.getElementById('roomCodeInput').value.trim().toUpperCase();
+  const playerName = document.getElementById('playerNameInput').value.trim();
+  const names = [playerName || 'Тоглогч'];
+
+  if (!code) { alert('Room code оруулна уу'); return; }
+  if (!playerName) { alert('Нэрээ оруулна уу'); return; }
+
+  const btn = document.getElementById('joinBtn');
+  btn.disabled = true;
+  btn.textContent = 'Уншиж байна...';
+
+  fetch('/api/room?code=' + encodeURIComponent(code))
+    .then(r => { if (!r.ok) throw new Error('not found'); return r.json(); })
+    .then(data => {
+      shipCells = new Set(data.ships || []);
+      headCells = new Set(data.heads || []);
+      currentRoomCode = code;
+
+      // Тоглогчдыг эхлүүлэх
+      players = names.map(name => ({ name, score: 0, shots: 0, correct: 0, streak: 0 }));
+      currentTurn = 0;
+
+      // Өмнөх өгөгдлийг шалгах
+      const savedKey = 'cells_' + code + '_' + names[0];
+      let savedCells = {};
+      let savedScore = 0, savedShots = 0, savedCorrect = 0, savedStreak = 0;
+      try {
+        savedCells = JSON.parse(localStorage.getItem(savedKey) || '{}');
+        const savedStats = JSON.parse(localStorage.getItem('stats_' + savedKey) || '{}');
+        savedScore   = savedStats.score   || 0;
+        savedShots   = savedStats.shots   || 0;
+        savedCorrect = savedStats.correct || 0;
+        savedStreak  = savedStats.streak  || 0;
+      } catch(e) {}
+
+      btn.disabled = false;
+      btn.textContent = 'ТОГЛООМ ЭХЛЭХ →';
+
+      // Өмнөх өгөгдөл байвал сонголт харуулна
+      if (savedScore > 0 || Object.keys(savedCells).length > 0) {
+        showContinueDialog(savedKey, savedCells, savedScore, savedShots, savedCorrect, savedStreak, names);
+      } else {
+        launchGame(savedKey, {}, 0, 0, 0, 0, names);
+      }
+    })
+    .catch(() => {
+      alert('Room code олдсонгүй!\nБагш эхлээд "Room үүсгэх" дарна уу.');
+      btn.disabled = false;
+      btn.textContent = 'ТОГЛООМ ЭХЛЭХ →';
+    });
+}
+
+function showContinueDialog(savedKey, savedCells, savedScore, savedShots, savedCorrect, savedStreak, names) {
+  // Глобал түр хувьсагч ашиглан onclick-д data дамжуулна
+  window._continueData = { savedKey, savedCells, savedScore, savedShots, savedCorrect, savedStreak, names };
+
+  const ov = document.createElement('div');
+  ov.className = 'pin-overlay';
+  ov.id = 'continueOverlay';
+  ov.innerHTML = `
+    <div class="pin-box" style="text-align:center">
+      <div class="pin-title">🎮 ТОГЛООМ ОЛДЛОО</div>
+      <div style="color:var(--muted);font-size:13px;margin-bottom:16px">Өмнөх тоглоомын мэдээлэл:</div>
+      <div style="background:var(--bg);border-radius:8px;padding:12px;margin-bottom:20px">
+        <div style="font-size:22px;font-weight:900;color:#82b1ff;font-family:'Orbitron',monospace">${savedScore} оноо</div>
+        <div style="font-size:12px;color:var(--muted);margin-top:4px">${savedShots} буудалт · ${savedCorrect} зөв</div>
+      </div>
+      <button class="pin-btn" onclick="continueGame(true)">▶ Үргэлжлүүлэх</button>
+      <button class="pin-btn" style="background:transparent;border:1px solid var(--border);color:var(--muted);margin-top:10px" onclick="continueGame(false)">🔄 Шинээр эхлэх</button>
+    </div>
+  `;
+  document.body.appendChild(ov);
+}
+
+function continueGame(resume) {
+  const d = window._continueData;
+  if (!d) return;
+  document.getElementById('continueOverlay').remove();
+  if (resume) {
+    launchGame(d.savedKey, d.savedCells, d.savedScore, d.savedShots, d.savedCorrect, d.savedStreak, d.names);
+  } else {
+    launchGame(d.savedKey, {}, 0, 0, 0, 0, d.names);
+  }
+  window._continueData = null;
+}
+
+function launchGame(savedKey, cells, score, shots, correct, streak, names) {
+  players[0].score   = score;
+  players[0].shots   = shots;
+  players[0].correct = correct;
+  players[0].streak  = streak;
+
+  gameState = { cells, score, streak, timer: 2400, shots, correct };
+
+  sessionStorage.setItem('studentMode', 'yes');
+  updateTeacherBtn();
+  showTurnScreen();
+}
+
+function showTurnScreen() {
+  beginTurn();
+}
+
+function beginTurn() {
+  const p = players[currentTurn];
+  currentPlayerName = p.name;
+
+  // Тухайн тоглогчийн state-г сэргээх
+  gameState = {
+    cells: gameState.cells,
+    score: p.score,
+    streak: p.streak || 0,
+    timer: 99999,
+    shots: p.shots,
+    correct: p.correct
+  };
+  // Шинэ тоглогч — бодлогын давталтыг reset хийх
+  window._usedProblems = { empty: new Set(), hit: new Set(), sunk: new Set() };
+
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('game').classList.add('active');
+  buildGameGrid();
+  document.getElementById('gamePlayerName').textContent = p.name;
+  document.getElementById('gameScore').textContent = p.score;
+  document.getElementById('cardArea').style.display = 'none';
+  document.getElementById('noCard').style.display = 'flex';
+  updateStats();
+
+  clearInterval(timerInterval);
+  clearInterval(window._sbRefresh);
+  window._sbRefresh = setInterval(updateLiveScoreboard, 5000);
+}
+
+function tickTurnTimer() {
+  if (gameState.timer <= 0) {
+    clearInterval(timerInterval);
+    endTurn();
+    return;
+  }
+  gameState.timer--;
+  const m = Math.floor(gameState.timer / 60);
+  const s = gameState.timer % 60;
+  const el = document.getElementById('gameTimer');
+  el.textContent = String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0');
+  el.className = 'timer-display' + (gameState.timer < 10 ? ' timer-warn' : '');
+}
+
+function endTurn() {
+  // Тоглогчийн оноог хадгалах
+  const p = players[currentTurn];
+  p.score   = gameState.score;
+  p.shots   = gameState.shots;
+  p.correct = gameState.correct;
+  p.streak  = gameState.streak;
+
+  // Оноог API-д хадгалах
+  saveScore(p.name, currentRoomCode, p.score, p.shots, p.correct);
+
+  // Дараагийн тоглогч
+  currentTurn = (currentTurn + 1) % players.length;
+
+  // Хэрэв бүх нүд дуусвал тоглоом дуусна
+  const resolved = Object.values(gameState.cells).filter(c => c.resolved).length;
+  const total = shipCells.size;
+  if (resolved >= total && total > 0) {
+    showMultiGameEnd();
+    return;
+  }
+
+  showTurnScreen();
+}
+
+function exitGame() {
+  clearInterval(timerInterval);
+  stopLiveRankPoll();
+  if (players.length > 0) {
+    endTurn(); // ээлж дуусгаж дараагийн тоглогч руу
+  } else {
+    showScreen('home');
+  }
+}
+
+// ═══ SCREEN NAV ═══
+function showScreen(id) {
+  // 'teacher' руу зөвхөн verifyTeacher()-ээр орно — шууд дуудахыг хориглоно
+  if (id === 'teacher') { verifyTeacher(); return; }
+
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+
+  if (id === 'home') {
+    // Нүүр хуудас руу буцахад бүгдийг цэвэрлэнэ
+    if (window._sbPoll) { clearInterval(window._sbPoll); window._sbPoll = null; }
+    if (window._sbRefresh) { clearInterval(window._sbRefresh); window._sbRefresh = null; }
+    players = [];
+    sessionStorage.removeItem('studentMode');
+    const rc = document.getElementById('roomCodeBox');
+    if (rc) rc.style.display = 'none';
+    updateTeacherBtn();
+    buildHomeBg();
+    updateTeacherBtn();
+  }
+}
+
+// БАГШ товчийг сурагч горимд нуудаг
+function updateTeacherBtn() {
+  // Товчийг үргэлж харуулна — студент горимд ч PIN асуудаг
+  const btn = document.getElementById('teacherBtn');
+  if (!btn) return;
+  btn.style.display = '';
+}
+
+// Багшийн нэвтрэлт — үргэлж PIN шаарддаг
+function verifyTeacher() {
+  const pin = getTeacherPin();
+  const isStudent = sessionStorage.getItem('studentMode') === 'yes';
+
+  // Сурагчийн эрхээр орсон бол PIN заавал шаарддаг
+  if (isStudent) {
+    if (!pin) {
+      alert('Багшийн нэвтрэх код тохируулаагүй байна. Эхлээд нүүр хуудаснаас БАГШ горимд орж PIN тохируулна уу.');
+      return;
+    }
+    showEnterPinOverlay();
+    return;
+  }
+
+  // Сурагч горимд байхгүй — PIN тохируулаагүй бол шууд нээнэ
+  if (!pin) {
+    openTeacherScreen();
+    return;
+  }
+
+  showEnterPinOverlay();
+}
+
+function showEnterPinOverlay() {
+  const ov = document.createElement('div');
+  ov.className = 'pin-overlay';
+  ov.id = 'pinOverlay';
+  ov.innerHTML = `
+    <div class="pin-box">
+      <div class="pin-title">🔐 БАГШИЙН НЭВТРЭЛТ</div>
+      <div class="pin-sub">Нэвтрэх кодоо оруулна уу</div>
+      <input class="pin-input" id="pinInput" type="password"
+        maxlength="6" inputmode="numeric" placeholder="••••"
+        onkeydown="if(event.key==='Enter') submitPin()" autofocus />
+      <button class="pin-btn" onclick="submitPin()">Нэвтрэх →</button>
+      <div style="display:flex;justify-content:space-between;margin-top:8px">
+        <div class="pin-cancel" onclick="document.getElementById('pinOverlay').remove()">Цуцлах</div>
+        <div class="pin-cancel" onclick="document.getElementById('pinOverlay').remove();resetTeacherPin()" style="color:var(--red)">Код мартсан?</div>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(ov);
+  setTimeout(() => document.getElementById('pinInput')?.focus(), 100);
+}
+
+function openTeacherScreen() {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('teacher').classList.add('active');
+
+  // Багшийн өөрийн сүүлийн room-г ачаална — сурагчийн currentRoomCode биш
+  const pin = getTeacherPin();
+  const key = 'myrooms_' + pin;
+  let myRooms = [];
+  try { myRooms = JSON.parse(localStorage.getItem(key) || '[]'); } catch(e) {}
+
+  const teacherRoomCode = myRooms.length ? myRooms[0].code : null;
+
+  if (teacherRoomCode) {
+    fetch('/api/room?code=' + encodeURIComponent(teacherRoomCode))
+      .then(r => r.ok ? r.json() : null)
+      .then(data => {
+        if (data) {
+          shipCells = new Set(data.ships || []);
+          headCells = new Set(data.heads || []);
+          roomCode = teacherRoomCode;
+          document.getElementById('roomCodeVal').textContent = teacherRoomCode;
+          const nameEl = document.getElementById('roomCodeName');
+          if (nameEl && myRooms[0].name) nameEl.textContent = '📌 ' + myRooms[0].name;
+          document.getElementById('roomCodeBox').style.display = 'block';
+        } else {
+          shipCells = new Set();
+          headCells = new Set();
+        }
+        buildTeacherGrid();
+        document.getElementById('shipCount').textContent = shipCells.size + ' нүд, ' + headCells.size + ' толгой';
+      }).catch(() => {
+        shipCells = new Set();
+        headCells = new Set();
+        buildTeacherGrid();
+      });
+  } else {
+    // Багшийн room байхгүй — хоосон grid
+    shipCells = new Set();
+    headCells = new Set();
+    roomCode = '';
+    document.getElementById('roomCodeBox').style.display = 'none';
+    buildTeacherGrid();
+    document.getElementById('shipCount').textContent = '0 нүд';
+  }
+}
+
+function resetTeacherPin() {
+  if (confirm('Нэвтрэх кодыг устгаж шинээр тохируулах уу?')) {
+    sessionStorage.removeItem('teacherPin');
+    showSetPinOverlay(false);
+  }
+}
+
+// ═══ HOME BG ═══
+function buildHomeBg() {
+  const bg = document.getElementById('homeBg');
+  bg.innerHTML = '';
+  for (let i = 0; i < 100; i++) {
+    const d = document.createElement('div');
+    d.className = 'home-bg-cell';
+    d.style.opacity = Math.random() > 0.6 ? '0.4' : '0.1';
+    bg.appendChild(d);
+  }
+}
+buildHomeBg();
+
+// ═══ TEACHER GRID ═══
+function buildTeacherGrid() {
+  const tbl = document.getElementById('teacherGrid');
+  tbl.innerHTML = '';
+  let hr = tbl.insertRow();
+  let th = hr.insertCell(); th.className = 'grid-corner';
+  COLS.forEach(c => {
+    let td = hr.insertCell(); td.className = 'grid-col-head'; td.textContent = c;
+  });
+  ROWS.forEach(row => {
+    let tr = tbl.insertRow();
+    let rh = tr.insertCell(); rh.className = 'grid-row-head'; rh.textContent = row;
+    COLS.forEach(col => {
+      let coord = row + col;
+      let td = tr.insertCell();
+      td.dataset.coord = coord;
+      refreshTeacherCell(td, coord);
+      // Зүүн дарах: хэвийн нүд нэмэх/хасах
+      td.addEventListener('mousedown', e => {
+        e.preventDefault();
+        if (e.shiftKey) {
+          // Shift+click → толгой тэмдэглэх
+          toggleHead(coord);
+        } else {
+          paintMode = !shipCells.has(coord);
+          isPainting = true;
+          toggleShip(coord);
+        }
+      });
+      td.addEventListener('mouseenter', () => { if (isPainting && !event.shiftKey) toggleShip(coord); });
+      // Баруун дарах: толгой тэмдэглэх
+      td.addEventListener('contextmenu', e => {
+        e.preventDefault();
+        toggleHead(coord);
+      });
+    });
+  });
+  document.addEventListener('mouseup', () => { isPainting = false; }, { once: false });
+  updateShipCount();
+}
+
+function refreshTeacherCell(td, coord) {
+  if (headCells.has(coord)) {
+    td.className = 'grid-cell ship-head';
+  } else if (shipCells.has(coord)) {
+    td.className = 'grid-cell ship';
+  } else {
+    td.className = 'grid-cell';
+  }
+}
+
+function toggleHead(coord) {
+  // Толгой нүд тэмдэглэхийн тулд эхлээд ship байх ёстой
+  if (!shipCells.has(coord)) {
+    shipCells.add(coord);
+  }
+  if (headCells.has(coord)) {
+    headCells.delete(coord);
+  } else {
+    headCells.add(coord);
+  }
+  const td = document.querySelector(`#teacherGrid [data-coord="${coord}"]`);
+  if (td) refreshTeacherCell(td, coord);
+  updateShipCount();
+}
+
+function toggleShip(coord) {
+  if (paintMode) { shipCells.add(coord); } 
+  else { shipCells.delete(coord); headCells.delete(coord); }
+  const td = document.querySelector(`#teacherGrid [data-coord="${coord}"]`);
+  if (td) refreshTeacherCell(td, coord);
+  updateShipCount();
+}
+
+function clearShips() {
+  shipCells.clear();
+  headCells.clear();
+  document.querySelectorAll('#teacherGrid .grid-cell').forEach(td => td.className = 'grid-cell');
+  updateShipCount();
+}
+
+function updateShipCount() {
+  document.getElementById('shipCount').textContent = shipCells.size + ' нүд, ' + headCells.size + ' толгой';
+}
+
+function generateRoom() {
+  if (!getTeacherPin()) {
+    showSetPinOverlay(true);
+    return;
+  }
+  if (shipCells.size === 0) {
+    alert('Эхлээд онгоц зурна уу!');
+    return;
+  }
+
+  // Идэвхтэй room байвал баталгаажуулалт асуух
+  const currentCodeEl = document.getElementById('roomCodeVal');
+  const roomCodeBox = document.getElementById('roomCodeBox');
+  const currentCode = currentCodeEl ? currentCodeEl.textContent.trim() : '';
+  if (currentCode && roomCodeBox && roomCodeBox.style.display !== 'none') {
+    if (!confirm('⚠️ Одоо идэвхтэй room байна: ' + currentCode + '\n\nШинэ room үүсгэх үү?')) {
+      return;
+    }
+  }
+
+  const roomName = document.getElementById('roomNameInput').value.trim() || 'Room';
+  roomCode = String(Math.floor(100000 + Math.random() * 900000));
+
+  const roomData = {
+    ships: [...shipCells],
+    heads: [...headCells],
+    code: roomCode,
+    name: roomName,
+    created: Date.now()
+  };
+
+  fetch('/api/room', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(roomData)
+  }).then(r => r.json()).then(res => {
+    if (res.ok) {
+      // Энэ багшийн room-уудыг localStorage-д PIN-тэй холбон хадгалах
+      const pin = getTeacherPin();
+      const key = 'myrooms_' + pin;
+      let myRooms = [];
+      try { myRooms = JSON.parse(localStorage.getItem(key) || '[]'); } catch(e) {}
+      if (!myRooms.find(r => r.code === roomCode)) {
+        myRooms.unshift({ code: roomCode, name: roomName, created: Date.now() });
+        myRooms = myRooms.slice(0, 50);
+        localStorage.setItem(key, JSON.stringify(myRooms));
+      }
+      document.getElementById('roomCodeVal').textContent = roomCode;
+      const nameEl = document.getElementById('roomCodeName');
+      if (nameEl) nameEl.textContent = '📌 ' + roomName;
+      document.getElementById('roomCodeBox').style.display = 'block';
+    } else {
+      alert('Алдаа: ' + (res.error || 'Room үүсгэж чадсангүй'));
+    }
+  }).catch(() => {
+    alert('Сервертэй холбогдож чадсангүй.');
+  });
+}
+
+function copyRoomCode() {
+  if (!roomCode) return;
+  navigator.clipboard.writeText(roomCode).then(() => {
+    const el = document.getElementById('copyDone');
+    el.style.display = 'block';
+    setTimeout(() => el.style.display = 'none', 2000);
+  }).catch(() => {
+    // fallback
+    const el = document.getElementById('roomCodeVal');
+    const range = document.createRange();
+    range.selectNode(el);
+    window.getSelection().removeAllRanges();
+    window.getSelection().addRange(range);
+  });
+}
+
+// ═══ GAME START ═══
+function startGame() {
+  const name = document.getElementById('playerNameInput').value.trim();
+  const code = document.getElementById('roomCodeInput').value.trim().toUpperCase();
+  if (!name || !code) return;
+
+  const btn = document.querySelector('#entry .join-btn');
+  if (btn) { btn.disabled = true; btn.textContent = 'Уншиж байна...'; }
+
+  function launchGame() {
+    // gameState beginTurn()-д тохируулагдана
+    activeCard = null; selectedCell = null; cardLocked = false; selectedChoice = null;
+    currentPlayerName = name;
+    currentRoomCode = code;
+
+    document.getElementById('gamePlayerName').textContent = name;
+    document.getElementById('gameRoomCode').textContent = code;
+    document.getElementById('gameScore').textContent = '0';
+    // timer болон rank poll-г beginTurn() дотор тохируулна
+    document.getElementById('timeUpBanner').style.display = 'none';
+    document.getElementById('lastShot').textContent = '';
+    document.getElementById('streakBadge').style.display = 'none';
+    document.getElementById('noCard').style.display = 'flex';
+    document.getElementById('cardArea').style.display = 'none';
+    if (btn) { btn.disabled = false; btn.textContent = 'Тоглоомд нэгдэх →'; }
+    updateStats();
+    buildGameGrid();
+    showScreen('game');
+    clearInterval(timerInterval);
+    timerInterval = setInterval(tickTimer, 1000);
+  }
+
+  fetch('/api/room?code=' + encodeURIComponent(code))
+    .then(r => { if (!r.ok) throw new Error('not found'); return r.json(); })
+    .then(data => {
+      shipCells = new Set(data.ships || []);
+      headCells = new Set(data.heads || []);
+      launchGame();
+    })
+    .catch(() => {
+      alert('Room code олдсонгүй!\nБагш эхлээд "Room үүсгэх" дарна уу.');
+      if (btn) { btn.disabled = false; btn.textContent = 'Тоглоомд нэгдэх →'; }
+    });
+}
+
+function tickTimer() {
+  // Multi-player горимд tickTurnTimer ашиглана
+  tickTurnTimer();
+}
+
+// ═══ GAME GRID ═══
+function buildGameGrid() {
+  const tbl = document.getElementById('gameGrid');
+  tbl.innerHTML = '';
+  let hr = tbl.insertRow();
+  let th = hr.insertCell(); th.className = 'grid-corner';
+  COLS.forEach(c => {
+    let td = hr.insertCell(); td.className = 'grid-col-head'; td.textContent = c;
+  });
+  ROWS.forEach(row => {
+    let tr = tbl.insertRow();
+    let rh = tr.insertCell(); rh.className = 'grid-row-head'; rh.textContent = row;
+    COLS.forEach(col => {
+      let coord = row + col;
+      let td = tr.insertCell();
+      td.className = 'grid-cell';
+      td.dataset.coord = coord;
+      td.addEventListener('click', () => handleShot(coord));
+      // Өмнөх буудалтуудыг сэргээх (онгоцны байршлыг харуулахгүй)
+      const cs = gameState.cells[coord];
+      if (cs && cs.resolved) {
+        const isShip = shipCells.has(coord);
+        const isHead = headCells.has(coord);
+        if (isHead) td.className = 'grid-cell sunk';
+        else if (isShip) td.className = 'grid-cell hit';
+        else td.className = 'grid-cell miss';
+      } else if (cs && !cs.resolved) {
+        td.className = 'grid-cell wrong-ans';
+      }
+      // Онгоцны байршлыг ХАРУУЛАХГҮЙ — ship, ship-head class огт нэмэхгүй
+    });
+  });
+}
+
+function handleShot(coord) {
+  if (cardLocked) return;
+  if (gameState.timer <= 0) return;
+
+  const td = document.querySelector(`#gameGrid [data-coord="${coord}"]`);
+  const cellState = gameState.cells[coord];
+
+  // Аль хэдийн зөв бодсон нүд — дахин буудахгүй
+  if (cellState && cellState.resolved) return;
+
+  // Буруу бодсон нүд — дахин оролдох (шинэ random бодлого)
+  if (cellState && !cellState.resolved) {
+    selectedCell = coord;
+    if (td) td.className = 'grid-cell selected';
+    cardLocked = true;
+    const prevType = cellState.savedCard ? cellState.savedCard.type : pickCardType(shipCells.has(coord));
+    const newProblem = randProblem(prevType);
+    activeCard = { type: prevType, problem: newProblem, coord };
+    showCard(activeCard);
+    return;
+  }
+
+  // Шинэ нүд — random бодлого сонгоно
+  selectedCell = coord;
+  if (td) td.className = 'grid-cell selected';
+
+  const isShip = shipCells.has(coord);
+  const type = pickCardType(isShip);
+  const problem = randProblem(type);
+  activeCard = { type, problem, coord };
+  cardLocked = true;
+  showCard(activeCard);
+}
+
+function pickCardType(isShip) {
+  const r = Math.random();
+  if (r < 0.45) return 'empty';
+  if (r < 0.80) return 'hit';
+  return 'sunk';
+}
+
+function randProblem(type) {
+  const arr = PROBLEMS[type];
+  // Давтаагүй бодлого сонгох
+  if (!window._usedProblems) window._usedProblems = { empty: new Set(), hit: new Set(), sunk: new Set() };
+  const used = window._usedProblems[type];
+  if (used.size >= arr.length) used.clear(); // бүгдийг ашигласан бол дахиад эхлүүлэх
+  let idx;
+  do { idx = Math.floor(Math.random() * arr.length); } while (used.has(idx));
+  used.add(idx);
+  return arr[idx];
+}
+
+
+
+function showCard(card) {
+  document.getElementById('noCard').style.display = 'none';
+  const area = document.getElementById('cardArea');
+  area.style.display = 'block';
+  const p = card.problem;
+  const labels = ['A','B','C','D','E'];
+
+  const choicesHTML = `
+    <div class="choices" id="choicesBox">
+      ${p.opts.map((opt, i) => `
+        <button class="choice-btn" id="choice-${labels[i]}" onclick="selectChoice('${labels[i]}')">
+          <span class="choice-label">${labels[i]}</span>
+          <span class="choice-text">${opt}</span>
+        </button>
+      `).join('')}
+    </div>
+    <button class="check-btn" id="checkBtn" onclick="checkAnswer()" disabled style="opacity:0.4">Шалгах ✓</button>
+  `;
+
+  area.innerHTML = `
+    <div class="card card-${card.type}">
+      <div class="card-type-label" style="color:${CARD_COLORS[card.type]}">
+        ${CARD_ICONS[card.type]} ${CARD_LABELS[card.type]}
+        <span style="float:right;font-size:11px;color:var(--muted)">📍${card.coord}</span>
+      </div>
+      <div class="card-pts" style="margin-bottom:10px">+${CARD_POINTS[card.type]} оноо &nbsp;·&nbsp; <span style="color:var(--muted)">${p.t}</span></div>
+      <div class="card-q">${p.q}</div>
+      ${choicesHTML}
+    </div>
+  `;
+  if (window.MathJax) MathJax.typesetPromise([area]);
+}
+
+function mathKbdInput(val) {
+  if (val === '__del') { window._mathInput = (window._mathInput||'').slice(0,-1); }
+  else if (val === '__clr') { window._mathInput = ''; }
+  else { window._mathInput = (window._mathInput||'') + val; }
+  const preview = document.getElementById('mathPreview');
+  if (!preview) return;
+  const raw = window._mathInput || '';
+  if (!raw) {
+    preview.textContent = 'Хариултаа оруулна уу...';
+    preview.classList.remove('has-input');
+    const cb = document.getElementById('checkBtn');
+    if (cb) { cb.disabled = true; cb.style.opacity = '0.4'; }
+    return;
+  }
+  preview.classList.add('has-input');
+  let latex = raw
+    .replace(/sqrt\(([^)]*)\)/g,'\sqrt{$1}')
+    .replace(/\^(\d+)/g,'^{$1}')
+    .replace(/alpha/g,'\alpha').replace(/beta/g,'\beta')
+    .replace(/pi/g,'\pi').replace(/inf/g,'\infty')
+    .replace(/sin\(/g,'\sin(').replace(/cos\(/g,'\cos(')
+    .replace(/tan\(/g,'\tan(').replace(/log\(/g,'\log(');
+  preview.innerHTML = '$' + latex + '$';
+  if (window.MathJax) MathJax.typesetPromise([preview]);
+  const cb = document.getElementById('checkBtn');
+  if (cb) { cb.disabled = false; cb.style.opacity = '1'; }
+  selectedChoice = raw;
+}
+
+function selectChoice(label) {
+  selectedChoice = label;
+  document.querySelectorAll('.choice-btn').forEach(b=>b.classList.remove('selected'));
+  const btn = document.getElementById('choice-'+label);
+  if (btn) btn.classList.add('selected');
+  const cb = document.getElementById('checkBtn');
+  if (cb) { cb.disabled = false; cb.style.opacity = '1'; }
+}
+
+function checkAnswer() {
+  if (!activeCard || !selectedChoice) return;
+  const p = activeCard.problem;
+  const correct = selectedChoice === p.a;
+
+  // Хариулт харуулах
+  document.querySelectorAll('.choice-btn').forEach(btn => {
+    const lbl = btn.id.replace('choice-', '');
+    btn.classList.remove('selected');
+    if (lbl === p.a) btn.classList.add('reveal');
+    else if (lbl === selectedChoice && !correct) btn.classList.add('wrong');
+  });
+  const cb = document.getElementById('checkBtn');
+  if (cb) cb.style.display = 'none';
+
+  // Оноо
+  const pts = correct ? CARD_POINTS[activeCard.type] : -2;
+  gameState.score = Math.max(0, gameState.score + pts);
+  gameState.shots++;
+  if (correct) { gameState.correct++; gameState.streak++; }
+  else { gameState.streak = 0; }
+
+  if (correct) {
+    gameState.cells[activeCard.coord] = { resolved: true, correct: true };
+  } else {
+    gameState.cells[activeCard.coord] = { resolved: false, correct: false, savedCard: activeCard };
+  }
+
+  // localStorage-д хадгалах
+  try {
+    const savedKey = 'cells_' + currentRoomCode + '_' + currentPlayerName;
+    localStorage.setItem(savedKey, JSON.stringify(gameState.cells));
+    localStorage.setItem('stats_' + savedKey, JSON.stringify({
+      score:   gameState.score,
+      shots:   gameState.shots,
+      correct: gameState.correct,
+      streak:  gameState.streak
+    }));
+  } catch(e) {}
+
+  markCell(activeCard.coord, correct);
+
+  // Feedback
+  const feedbackEl = document.createElement('div');
+  feedbackEl.className = `feedback-box ${correct ? 'feedback-correct' : 'feedback-wrong'}`;
+  const solText = activeCard.problem.sol || '';
+  feedbackEl.innerHTML = correct
+    ? `✅ ЗӨВ! +${CARD_POINTS[activeCard.type]} оноо`
+    : `❌ БУРУУ! -2 оноо <span style="font-size:13px;font-weight:400">Зөв: <b>${p.a}</b></span>`;
+  
+  // Бодолт товч
+  if (solText) {
+    const solBtn = document.createElement('button');
+    solBtn.textContent = '📖 Бодолт харах';
+    solBtn.style.cssText = 'display:block;margin-top:8px;background:transparent;border:1px solid currentColor;color:inherit;padding:4px 12px;border-radius:4px;cursor:pointer;font-family:inherit;font-size:12px;width:100%';
+    solBtn.onclick = () => {
+      const solDiv = document.createElement('div');
+      solDiv.style.cssText = 'margin-top:8px;padding:10px;background:rgba(0,0,0,0.4);border-radius:6px;font-size:13px;color:#e0e0e0;font-weight:400;text-align:left;line-height:1.6';
+      solDiv.innerHTML = solText;
+      solBtn.replaceWith(solDiv);
+      if (window.MathJax) MathJax.typesetPromise([solDiv]);
+      // nextBtn-г ✖ Хаах болгох
+      const nb = document.querySelector('#cardArea .card button:last-child');
+      if (nb) { nb.textContent = '✖ Хаах'; nb.style.background = 'transparent'; nb.style.border = '1px solid var(--muted)'; nb.style.color = 'var(--muted)'; nb.style.fontWeight = '400'; }
+    };
+    feedbackEl.appendChild(solBtn);
+  }
+
+  const cardEl = document.querySelector('#cardArea .card');
+  if (cardEl) cardEl.appendChild(feedbackEl);
+
+  document.getElementById('lastShot').innerHTML =
+    `Сүүлд: <strong>${activeCard.coord}</strong> — <span style="color:${correct?'var(--green)':'var(--red)'}">` +
+    `${correct?'+'+CARD_POINTS[activeCard.type]:'-2'}</span>`;
+
+  const sb = document.getElementById('streakBadge');
+  if (gameState.streak >= 2) { sb.style.display='block'; sb.textContent='🔥 '+gameState.streak+' дараалал!'; }
+  else sb.style.display = 'none';
+
+  document.getElementById('gameScore').textContent = gameState.score;
+  updateStats();
+
+  // Явцын оноо хадгалах — сурагч гараагүй ч бүртгэгдэнэ
+  const p_curr = players[currentTurn];
+  if (p_curr) {
+    p_curr.score   = gameState.score;
+    p_curr.shots   = gameState.shots;
+    p_curr.correct = gameState.correct;
+    saveScore(p_curr.name, currentRoomCode, p_curr.score, p_curr.shots, p_curr.correct);
+  }
+
+  selectedChoice = null;
+  window._cardCloseTimer = null;
+
+  // Дараагийн буудалт товч нэмэх
+  const nextBtn = document.createElement('button');
+  nextBtn.textContent = '▶ Дараагийн буудалт';
+  nextBtn.style.cssText = 'display:block;margin-top:10px;width:100%;padding:8px;background:var(--accent);border:none;color:#000;border-radius:4px;cursor:pointer;font-family:inherit;font-size:13px;font-weight:700';
+  nextBtn.onclick = () => {
+    clearTimeout(window._cardCloseTimer);
+    document.getElementById('cardArea').style.display = 'none';
+    document.getElementById('noCard').style.display = 'flex';
+    activeCard = null; selectedCell = null; cardLocked = false;
+  };
+  const cardEl2 = document.querySelector('#cardArea .card');
+  if (cardEl2) cardEl2.appendChild(nextBtn);
+
+}
+
+function markCell(coord, correct) {
+  const td = document.querySelector(`#gameGrid [data-coord="${coord}"]`);
+  if (!td) return;
+  const isShip = shipCells.has(coord);
+  const isHead = headCells.has(coord);
+  if (correct && isHead)       td.className = 'grid-cell sunk';
+  else if (correct && isShip)  td.className = 'grid-cell hit';
+  else if (correct && !isShip) td.className = 'grid-cell miss';
+  else {
+    td.className = 'grid-cell wrong-ans';
+    td.classList.add('anim-wrong');
+    setTimeout(() => td.classList.remove('anim-wrong'), 500);
+    return;
+  }
+  td.classList.add('anim-correct');
+  setTimeout(() => td.classList.remove('anim-correct'), 700);
+}
+
+// ═══ LIVE RANK ═══
+let _rankPoll = null;
+
+function startLiveRankPoll() {
+  stopLiveRankPoll();
+  pollLiveRank();
+  _rankPoll = setInterval(pollLiveRank, 8000);
+}
+
+function stopLiveRankPoll() {
+  if (_rankPoll) { clearInterval(_rankPoll); _rankPoll = null; }
+  const badge = document.getElementById('liveRankBadge');
+  if (badge) badge.style.display = 'none';
+}
+
+function pollLiveRank() {
+  const code = currentRoomCode;
+  const name = currentPlayerName;
+  if (!code || !name) return;
+
+  fetch('/api/score?code=' + encodeURIComponent(code))
+    .then(r => r.json())
+    .then(arr => {
+      if (!arr.length) return;
+      arr.sort((a, b) => b.score - a.score);
+      const idx = arr.findIndex(r => r.name === name);
+      const total = arr.length;
+      const badge = document.getElementById('liveRankBadge');
+      if (!badge) return;
+
+      if (idx === -1) {
+        // Оноо хадгалагдаагүй байна — тоглоом эхэлсэн
+        badge.style.display = 'block';
+        badge.textContent = '🏅 ' + total + ' тоглогч';
+        return;
+      }
+
+      const rank = idx + 1;
+      const medals = ['🥇','🥈','🥉'];
+      badge.style.display = 'block';
+      if (rank <= 3) {
+        badge.textContent = medals[rank-1] + ' ' + rank + '/' + total;
+        badge.style.color = rank === 1 ? 'var(--yellow)' : rank === 2 ? '#b0bec5' : '#ff8a65';
+      } else {
+        badge.textContent = '🏅 ' + rank + '/' + total;
+        badge.style.color = 'var(--accent)';
+      }
+    })
+    .catch(() => {});
+}
+
+function updateStats() {
+  document.getElementById('statShots').textContent = gameState.shots;
+  document.getElementById('statCorrect').textContent = gameState.correct;
+  document.getElementById('statStreak').textContent = '🔥 ' + (gameState.streak || 0);
+  document.getElementById('statScore').textContent = gameState.score;
+  updateLiveScoreboard();
+}
+
+function updateLiveScoreboard() {
+  const list = document.getElementById('liveScoreboardList');
+  if (!list || !currentRoomCode) return;
+  fetch('/api/score?code=' + encodeURIComponent(currentRoomCode))
+    .then(r => r.json())
+    .then(data => {
+      const medals = ['🥇','🥈','🥉'];
+      const sorted = (data.scores || []).sort((a,b) => b.score - a.score).slice(0,10);
+      list.innerHTML = sorted.map((p, i) => `
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:4px 0;border-bottom:1px solid var(--border);font-size:12px">
+          <span>${i < 3 ? medals[i] : (i+1)+'.'} <span style="color:var(--text)">${p.name}</span></span>
+          <span style="color:#82b1ff;font-weight:700">${p.score}</span>
+        </div>`).join('');
+    }).catch(() => {});
+}
+
+// ═══ ОНОО ХАДГАЛАХ ═══
+function saveScore(name, code, score, shots, correct) {
+  const rec = {
+    name, score, shots, correct,
+    time: new Date().toLocaleTimeString('mn-MN'),
+    ts: Date.now()
+  };
+
+  // Retry логик — 3 удаа оролдоно, rank буцааж харуулна
+  async function trySave(attempt) {
+    try {
+      const r = await fetch('/api/score', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ code, ...rec })
+      });
+      if (!r.ok) throw new Error('Server error');
+      const data = await r.json();
+      // Rank-г overlay дээр шинэчлэх
+      const rankEl = document.getElementById('gameEndRank');
+      if (rankEl && data.rank) {
+        const medals = ['🥇','🥈','🥉'];
+        rankEl.textContent = data.rank <= 3
+          ? medals[data.rank-1] + ' ' + data.rank + '-р байр'
+          : data.rank + '-р байр';
+        rankEl.style.display = 'block';
+      }
+    } catch(e) {
+      if (attempt < 3) {
+        setTimeout(() => trySave(attempt + 1), 2000 * attempt);
+      } else {
+        console.warn('Оноо хадгалж чадсангүй:', e.message);
+      }
+    }
+  }
+  trySave(1);
+}
+
+function showGameEnd(name, code) {
+  // Multi-player горимд showMultiGameEnd ашиглана
+}
+
+function showMultiGameEnd() {
+  clearInterval(timerInterval);
+  // Бүх оноог хадгалах
+  players.forEach(p => saveScore(p.name, currentRoomCode, p.score, p.shots, p.correct));
+
+  const sorted = [...players].sort((a,b) => b.score - a.score);
+  const medals = ['🥇','🥈','🥉'];
+
+  const rows = sorted.map((p, i) => {
+    const acc = p.shots > 0 ? Math.round(p.correct/p.shots*100) : 0;
+    return `<div style="display:flex;align-items:center;gap:12px;padding:10px 14px;background:var(--bg);border-radius:8px;${i===0?'border:2px solid var(--yellow)':''}">
+      <span style="font-size:22px">${i < 3 ? medals[i] : (i+1)+'.'}</span>
+      <span style="font-weight:700;font-size:15px;flex:1">${p.name}</span>
+      <span style="font-family:'Orbitron',monospace;font-size:16px;font-weight:900;color:var(--yellow)">${p.score}</span>
+      <span style="font-size:12px;color:var(--muted)">${acc}%</span>
+    </div>`;
+  }).join('');
+
+  const overlay = document.createElement('div');
+  overlay.className = 'game-end-overlay';
+  overlay.id = 'gameEndOverlay';
+  overlay.innerHTML = `
+    <div class="game-end-card" style="max-width:420px">
+      <div class="end-title">🏁 ТОГЛООМ ДУУСЛАА</div>
+      <div class="end-name" style="color:var(--yellow)">${sorted[0].name}</div>
+      <div class="end-sub" style="margin-bottom:20px">ЯЛАГЧ 🏆</div>
+      <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:24px">${rows}</div>
+      <button class="end-btn end-btn-primary" onclick="players=[];sessionStorage.removeItem('studentMode');updateTeacherBtn();document.getElementById('gameEndOverlay').remove();showScreen('home')">🏠 Нүүр хуудас</button>
+      <button class="end-btn end-btn-secondary" onclick="document.getElementById('gameEndOverlay').remove();openScoreboard()">📊 Scoreboard</button>
+    </div>
+  `;
+  document.body.appendChild(overlay);
+}
+
+// ═══ SCOREBOARD ═══
+
+function openScoreboard() {
+  // showScreen биш шууд нээнэ — teacher PIN асуухгүйн тулд
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('scoreboard').classList.add('active');
+  loadScoreboardRooms();
+}
+
+function loadScoreboardRooms() {
+  const filter = document.getElementById('sbRoomFilter');
+
+  // Зөвхөн энэ багшийн room-уудыг харуулна
+  const pin = getTeacherPin();
+  const key = 'myrooms_' + pin;
+  let myRooms = [];
+  try { myRooms = JSON.parse(localStorage.getItem(key) || '[]'); } catch(e) {}
+
+  if (!myRooms.length) {
+    filter.innerHTML = '<option value="">— Таны room байхгүй —</option>';
+    renderScoreboard();
+    return;
+  }
+
+  filter.innerHTML = myRooms.map(r => `<option value="${r.code}">${r.name ? r.name + ' — ' : ''}${r.code}</option>`).join('');
+  if (currentRoomCode && myRooms.find(r => r.code === currentRoomCode)) {
+    filter.value = currentRoomCode;
+  }
+  renderScoreboard();
+}
+
+function renderScoreboard() {
+  const filter = document.getElementById('sbRoomFilter');
+  const code = filter.value;
+  const content = document.getElementById('sbContent');
+
+  if (window._sbPoll) { clearInterval(window._sbPoll); window._sbPoll = null; }
+
+  if (!code) {
+    content.innerHTML = '<div class="sb-empty">Room байхгүй байна</div>';
+    return;
+  }
+
+  content.innerHTML = '<div class="sb-empty" style="padding:30px">⏳ Уншиж байна...</div>';
+
+  function pollScores() {
+    fetch('/api/score?code=' + encodeURIComponent(code))
+      .then(r => r.json())
+      .then(arr => {
+        arr.sort((a,b) => b.score - a.score);
+        renderScoreTable(content, arr, code);
+      })
+      .catch(() => {
+        renderScoreTable(content, [], code);
+      });
+  }
+  pollScores();
+  window._sbPoll = setInterval(pollScores, 5000); // 5 секунд тутам
+}
+
+function renderScoreTable(content, arr, code) {
+  if (arr.length === 0) {
+    content.innerHTML = `<div class="sb-room-tag">${code}</div><div class="sb-empty">Одоохондоо оноо байхгүй байна<br><small style="color:#4a6080">Сурагчид тоглож дуусахаар энд харагдана</small></div>`;
+    return;
+  }
+
+  const maxScore = Math.max(...arr.map(r => r.score), 1);
+  const maxShots = Math.max(...arr.map(r => r.shots || 0), 1);
+  const medals  = ['🥇','🥈','🥉'];
+  const podiumColors = ['#ffd60a','#b0bec5','#ff8a65'];
+
+  // ── Товч статистик ──
+  const avgAcc   = Math.round(arr.reduce((s,r) => s + (r.shots>0?r.correct/r.shots*100:0), 0) / arr.length);
+  const topScore = arr[0].score;
+  const finished = arr.length;
+
+  content.innerHTML = `
+    <!-- Header -->
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:8px">
+      <div style="display:flex;align-items:center;gap:10px">
+        <div class="sb-room-tag">📍 ${code}</div>
+        <span style="font-size:11px;color:var(--green);animation:pulse 2s infinite">🔴 Бодит цагт</span>
+      </div>
+      <button onclick="exportScoreCSV()" style="background:transparent;border:1px solid var(--border);color:var(--muted);padding:5px 12px;border-radius:4px;cursor:pointer;font-family:inherit;font-size:11px">⬇ CSV татах</button>
+    </div>
+
+    <!-- Статистик хэсэг -->
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:20px">
+      <div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:14px;text-align:center">
+        <div style="font-family:'Orbitron',monospace;font-size:22px;font-weight:900;color:#ffd60a">${finished}</div>
+        <div style="font-size:11px;color:var(--muted);margin-top:4px">ТОГЛОГЧ</div>
+      </div>
+      <div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:14px;text-align:center">
+        <div style="font-family:'Orbitron',monospace;font-size:22px;font-weight:900;color:#82b1ff">${topScore}</div>
+        <div style="font-size:11px;color:var(--muted);margin-top:4px">ДЭЭД ОНОО</div>
+      </div>
+      <div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:14px;text-align:center">
+        <div style="font-family:'Orbitron',monospace;font-size:22px;font-weight:900;color:var(--green)">${avgAcc}%</div>
+        <div style="font-size:11px;color:var(--muted);margin-top:4px">ДУНДАЖ НАРИЙВЧЛАЛ</div>
+      </div>
+    </div>
+
+    <!-- Хүснэгт -->
+    <table class="sb-table">
+      <thead><tr>
+        <th style="width:36px">#</th>
+        <th>Нэр</th>
+        <th>Оноо</th>
+        <th style="min-width:120px">Онооны явц</th>
+        <th>Зөв / Нийт</th>
+        <th style="min-width:100px">Нарийвчлал</th>
+        <th>Дууссан цаг</th>
+      </tr></thead>
+      <tbody>
+        ${arr.map((r, i) => {
+          const scorePct = Math.round(r.score / maxScore * 100);
+          const acc      = r.shots > 0 ? Math.round(r.correct / r.shots * 100) : 0;
+          const accColor = acc >= 80 ? 'var(--green)' : acc >= 60 ? 'var(--yellow)' : 'var(--red)';
+          const podium   = podiumColors[i] || '#4fc3f7';
+          const wrong    = (r.shots || 0) - (r.correct || 0);
+          return `<tr style="cursor:pointer" onclick="showStudentDetail(${JSON.stringify(r).replace(/"/g,'&quot;')})">
+            <td>
+              ${i < 3
+                ? `<span style="font-size:20px">${medals[i]}</span>`
+                : `<span class="sb-rank">${i+1}</span>`}
+            </td>
+            <td>
+              <div style="font-weight:700;font-size:14px">${r.name}</div>
+              <div style="font-size:11px;color:var(--muted)">${r.correct||0} зөв · ${wrong} буруу</div>
+            </td>
+            <td><span class="sb-score">${r.score}</span></td>
+            <td>
+              <div class="sb-bar-wrap" style="width:100%">
+                <div class="sb-bar" style="width:${scorePct}%;background:${podium}"></div>
+              </div>
+              <div style="font-size:10px;color:var(--muted);margin-top:2px">${scorePct}%</div>
+            </td>
+            <td style="text-align:center">
+              <span style="color:var(--green);font-weight:700">${r.correct||0}</span>
+              <span style="color:var(--muted)"> / ${r.shots||0}</span>
+            </td>
+            <td>
+              <div style="display:flex;align-items:center;gap:6px">
+                <div style="flex:1;height:6px;background:var(--bg3);border-radius:99px;overflow:hidden">
+                  <div style="width:${acc}%;height:100%;background:${accColor};border-radius:99px"></div>
+                </div>
+                <span style="color:${accColor};font-weight:700;font-size:13px;min-width:36px">${acc}%</span>
+              </div>
+            </td>
+            <td style="color:var(--muted);font-size:12px">${r.time||'—'}</td>
+          </tr>`;
+        }).join('')}
+      </tbody>
+    </table>
+    <div style="font-size:11px;color:var(--muted);margin-top:10px;text-align:right">👆 Мөр дарж сурагчийн дэлгэрэнгүй мэдээллийг харна уу</div>
+  `;
+
+  // CSV export функц
+  window.exportScoreCSV = function() {
+    const rows = [['#','Нэр','Оноо','Зөв','Нийт буудалт','Нарийвчлал %','Цаг']];
+    arr.forEach((r,i) => {
+      const acc = r.shots > 0 ? Math.round(r.correct/r.shots*100) : 0;
+      rows.push([i+1, r.name, r.score, r.correct||0, r.shots||0, acc+'%', r.time||'']);
+    });
+    const csv = '\uFEFF' + rows.map(r => r.map(c => `"${c}"`).join(',')).join('\n');
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob([csv], {type:'text/csv;charset=utf-8;'}));
+    a.download = `scoreboard-${code}-${new Date().toLocaleDateString('mn-MN')}.csv`;
+    a.click();
+  };
+}
+
+// Сурагчийн дэлгэрэнгүй popup
+function showStudentDetail(r) {
+  const acc   = r.shots > 0 ? Math.round(r.correct/r.shots*100) : 0;
+  const wrong = (r.shots||0) - (r.correct||0);
+  const accColor = acc >= 80 ? 'var(--green)' : acc >= 60 ? 'var(--yellow)' : 'var(--red)';
+
+  const ov = document.createElement('div');
+  ov.className = 'game-end-overlay';
+  ov.onclick = e => { if(e.target===ov) ov.remove(); };
+  ov.innerHTML = `
+    <div class="game-end-card" style="max-width:380px">
+      <div class="end-title">СУРАГЧИЙН МЭДЭЭЛЭЛ</div>
+      <div class="end-name">${r.name}</div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px">
+        <div style="background:var(--bg);border-radius:8px;padding:12px;text-align:center">
+          <div style="font-family:'Orbitron',monospace;font-size:28px;font-weight:900;color:#82b1ff">${r.score}</div>
+          <div style="font-size:11px;color:var(--muted);margin-top:4px">НИЙТ ОНОО</div>
+        </div>
+        <div style="background:var(--bg);border-radius:8px;padding:12px;text-align:center">
+          <div style="font-family:'Orbitron',monospace;font-size:28px;font-weight:900;color:${accColor}">${acc}%</div>
+          <div style="font-size:11px;color:var(--muted);margin-top:4px">НАРИЙВЧЛАЛ</div>
+        </div>
+        <div style="background:var(--bg);border-radius:8px;padding:12px;text-align:center">
+          <div style="font-family:'Orbitron',monospace;font-size:28px;font-weight:900;color:var(--green)">${r.correct||0}</div>
+          <div style="font-size:11px;color:var(--muted);margin-top:4px">ЗӨВ ХАРИУЛТ</div>
+        </div>
+        <div style="background:var(--bg);border-radius:8px;padding:12px;text-align:center">
+          <div style="font-family:'Orbitron',monospace;font-size:28px;font-weight:900;color:var(--red)">${wrong}</div>
+          <div style="font-size:11px;color:var(--muted);margin-top:4px">БУРУУ ХАРИУЛТ</div>
+        </div>
+      </div>
+
+      <!-- Нарийвчлалын bar -->
+      <div style="margin-bottom:20px">
+        <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-bottom:6px">
+          <span>Нарийвчлал</span><span>${acc}%</span>
+        </div>
+        <div style="height:10px;background:var(--bg);border-radius:99px;overflow:hidden">
+          <div style="width:${acc}%;height:100%;background:${accColor};border-radius:99px;transition:width 1s ease"></div>
+        </div>
+      </div>
+
+      <!-- Нийт буудалт -->
+      <div style="background:var(--bg);border-radius:8px;padding:12px;margin-bottom:16px;display:flex;justify-content:space-between;align-items:center">
+        <span style="color:var(--muted);font-size:13px">Нийт буудалт</span>
+        <span style="font-family:'Orbitron',monospace;font-weight:700;color:#fff">${r.shots||0}</span>
+      </div>
+
+      <div style="font-size:12px;color:var(--muted);margin-bottom:20px">🕐 Дууссан цаг: ${r.time||'—'}</div>
+
+      <button class="end-btn end-btn-secondary" onclick="this.closest('.game-end-overlay').remove()">Хаах</button>
+    </div>
+  `;
+  document.body.appendChild(ov);
+}
+
+function clearScoreboard() {
+  const filter = document.getElementById('sbRoomFilter');
+  const code = filter.value;
+  if (!code) return;
+  if (!confirm(`"${code}" room-ын бүх оноог устгах уу?`)) return;
+
+  fetch('/api/score?code=' + encodeURIComponent(code), { method: 'DELETE' })
+    .then(() => renderScoreboard())
+    .catch(() => renderScoreboard());
+}
+
+function deleteRoom() {
+  const filter = document.getElementById('sbRoomFilter');
+  const code = filter.value;
+  if (!code) return;
+  if (!confirm(`"${code}" room-г бүрмөсөн устгах уу?\nОноо болон room-ын мэдээлэл бүгд устна.`)) return;
+
+  // localStorage-аас устгах
+  const pin = getTeacherPin();
+  const key = 'myrooms_' + pin;
+  try {
+    let myRooms = JSON.parse(localStorage.getItem(key) || '[]');
+    myRooms = myRooms.filter(r => r.code !== code);
+    localStorage.setItem(key, JSON.stringify(myRooms));
+  } catch(e) {}
+
+  // Оноог устгах
+  fetch('/api/score?code=' + encodeURIComponent(code), { method: 'DELETE' }).catch(() => {});
+  // Room-г устгах
+  fetch('/api/room?code=' + encodeURIComponent(code), { method: 'DELETE' })
+    .finally(() => {
+      const opt = filter.querySelector(`option[value="${code}"]`);
+      if (opt) opt.remove();
+      if (filter.options.length > 0) {
+        filter.value = filter.options[0].value;
+        renderScoreboard();
+      } else {
+        document.getElementById('sbContent').innerHTML = '<div class="sb-empty">Room байхгүй байна</div>';
+        filter.innerHTML = '<option value="">— Room байхгүй —</option>';
+      }
+    });
+}
+
+// ── БАГШИЙН PIN ──
+// Багшийн PIN — sessionStorage-д хадгалагдана (tab хаагдахад устна)
+function getTeacherPin() {
+  return sessionStorage.getItem('teacherPin') || null;
+}
+
+function checkTeacherPin() {
+  verifyTeacher();
+}
+
+// Багш шинэ PIN тохируулах overlay
+// beforeRoom=true бол PIN тохируулсны дараа generateRoom() дуудна
+let _pinBeforeRoom = false;
+function showSetPinOverlay(beforeRoom) {
+  _pinBeforeRoom = !!beforeRoom;
+  const ov = document.createElement('div');
+  ov.className = 'pin-overlay';
+  ov.id = 'pinOverlay';
+  ov.innerHTML = `
+    <div class="pin-box">
+      <div class="pin-title">🔐 НЭВТРЭХ КОД ТОХИРУУЛАХ</div>
+      <div class="pin-sub" style="color:var(--accent)">
+        ${beforeRoom ? '⚠️ Room үүсгэхийн өмнө нэвтрэх код тохируулна уу' : 'Багш та өөрийн нэвтрэх кодоо зохионо уу'}
+      </div>
+      <input class="pin-input" id="pinNew" type="password"
+        maxlength="6" inputmode="numeric" placeholder="Шинэ код... (4-6 оронтой)"
+        onkeydown="if(event.key==='Enter') document.getElementById('pinConfirm').focus()" autofocus />
+      <input class="pin-input" id="pinConfirm" type="password"
+        maxlength="6" inputmode="numeric" placeholder="Дахин оруул..."
+        onkeydown="if(event.key==='Enter') submitSetPin()" style="margin-top:10px" />
+      <button class="pin-btn" onclick="submitSetPin()">Тохируулах →</button>
+      <div class="pin-cancel" onclick="document.getElementById('pinOverlay').remove()">Цуцлах</div>
+    </div>
+  `;
+  document.body.appendChild(ov);
+  setTimeout(() => document.getElementById('pinNew')?.focus(), 100);
+}
+
+function submitSetPin() {
+  const p1 = document.getElementById('pinNew').value;
+  const p2 = document.getElementById('pinConfirm').value;
+  if (!p1 || p1.length < 4) {
+    document.getElementById('pinNew').value = '';
+    document.getElementById('pinNew').placeholder = '❌ Хамгийн багадаа 4 оронтой';
+    document.getElementById('pinNew').classList.add('shake');
+    setTimeout(() => document.getElementById('pinNew')?.classList.remove('shake'), 600);
+    return;
+  }
+  if (p1 !== p2) {
+    document.getElementById('pinConfirm').value = '';
+    document.getElementById('pinConfirm').placeholder = '❌ Код таарахгүй байна';
+    document.getElementById('pinConfirm').classList.add('shake');
+    setTimeout(() => document.getElementById('pinConfirm')?.classList.remove('shake'), 600);
+    return;
+  }
+  sessionStorage.setItem('teacherPin', p1);
+  document.getElementById('pinOverlay').remove();
+  if (_pinBeforeRoom) {
+    // PIN тохируулсны дараа room үүсгэнэ
+    generateRoom();
+  } else {
+    openTeacherScreen();
+  }
+}
+
+function submitPin() {
+  const val = document.getElementById('pinInput')?.value;
+  const pin = getTeacherPin();
+  if (val === pin) {
+    document.getElementById('pinOverlay').remove();
+    openTeacherScreen();
+  } else {
+    const inp = document.getElementById('pinInput');
+    inp.classList.add('shake');
+    inp.value = '';
+    inp.placeholder = '❌ Буруу код';
+    setTimeout(() => { inp.classList.remove('shake'); inp.placeholder = '••••'; }, 600);
+  }
+}
+</script>
+</body>
+</html>
