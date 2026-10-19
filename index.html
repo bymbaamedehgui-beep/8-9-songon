@@ -8,7 +8,9 @@
 <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
 <script>
 MathJax = {
-  tex: { inlineMath: [['$','$'], ['\\(','\\)']], displayMath: [['$$','$$']] },
+  tex: { inlineMath: [['$','$'], ['\\(','\\)']], displayMath: [['$$','$$']],
+         // cyber-math-ийн сан KaTeX-д зориулагдсан: \allowbreak MathJax 3.2-д байхгүй (улаан алдаа гарна)
+         macros: { allowbreak: '' } },
   options: { skipHtmlTags: ['script','noscript','style','textarea'] },
   startup: { typeset: false }
 };
@@ -612,6 +614,74 @@ body {
 @keyframes shake {
   0%,100%{transform:translateX(0)} 20%,60%{transform:translateX(-8px)} 40%,80%{transform:translateX(8px)}
 }
+/* ── CYBERMATH БОДЛОГЫН САН: анги / сэдэв / ганцаараа ── */
+.btn-solo { background:#062a1e; border-color:var(--green); color:var(--green); }
+.btn-solo::before { background:var(--green); }
+.btn-solo:hover { color:var(--bg); }
+.btn-home .bi { position:relative; z-index:1; display:inline-flex; align-items:center; gap:8px; }
+.btn-home .bi svg { width:18px; height:18px; flex-shrink:0; }
+.sel-card { width:440px; max-width:100%; text-align:left; }
+.sel-card .entry-title { text-align:center; }
+.sel-label { font-size:11px; color:var(--muted); letter-spacing:3px; text-transform:uppercase; margin:14px 0 8px; }
+.grade-chips { display:flex; flex-wrap:wrap; gap:6px; }
+.grade-chip {
+  flex:1 1 34px; min-width:34px; padding:9px 0;
+  background:var(--bg); border:1px solid var(--border); border-radius:4px;
+  color:#90caf9; cursor:pointer; transition:all .15s;
+  font-family:'Orbitron',monospace; font-size:14px; font-weight:700;
+}
+.grade-chip:hover { border-color:var(--accent); color:#fff; }
+.grade-chip.on { background:#0a2a4a; border-color:var(--accent); color:var(--accent); box-shadow:0 0 10px #00b4d855; }
+.sel-topic { margin-bottom:6px; font-size:13px; padding:10px 12px; }
+.sel-topic:disabled { opacity:.6; }
+.sel-note { font-size:11px; color:var(--muted); line-height:1.6; }
+.sel-note.warn { color:#ffb74d; }
+.solo-info { margin-top:14px; padding:10px 12px; background:var(--bg); border:1px solid var(--border); border-left:3px solid var(--green); border-radius:3px; font-size:12px; color:#9fb3c8; line-height:1.6; }
+.cmq-badge {
+  display:inline-block; font-size:10px; color:var(--accent);
+  background:var(--bg); padding:2px 10px; margin-left:6px;
+  border-radius:99px; border:1px solid #1e4a6a;
+}
+.cmq-badge.offline { color:#ffb74d; border-color:#7a4a00; }
+.room-sel-line { font-size:12px; color:#90caf9; margin-bottom:6px; }
+.cmq-modal {
+  position:fixed; inset:0; z-index:10000; display:flex; padding:16px;
+  background:rgba(0,0,0,.78); overflow-y:auto; -webkit-overflow-scrolling:touch;
+  backdrop-filter:blur(4px);
+}
+.cmq-modal-box {
+  margin:auto; width:100%; max-width:400px; text-align:center;
+  background:var(--bg2); border:1px solid var(--border); border-radius:14px;
+  padding:26px 20px; box-shadow:0 20px 60px rgba(0,0,0,.5);
+  animation:popIn .3s cubic-bezier(0.34,1.56,0.64,1);
+}
+.cmq-modal-ic { display:flex; justify-content:center; margin-bottom:10px; color:var(--accent); }
+.cmq-modal-ic svg { width:40px; height:40px; }
+.cmq-modal-title { font-family:'Orbitron',monospace; font-size:16px; font-weight:900; color:var(--accent); margin-bottom:10px; letter-spacing:1px; }
+.cmq-modal-text { font-size:13px; color:var(--text); line-height:1.7; margin-bottom:8px; }
+.cmq-modal-stats { display:flex; gap:10px; justify-content:center; margin:14px 0 6px; flex-wrap:wrap; }
+.cmq-modal-stat { flex:1 1 80px; background:var(--bg); border-radius:8px; padding:10px 6px; }
+.cmq-modal-stat b { display:block; font-family:'Orbitron',monospace; font-size:20px; color:var(--yellow); }
+.cmq-modal-stat span { font-size:11px; color:var(--muted); }
+.cmq-btn {
+  display:block; width:100%; padding:12px; margin-top:10px;
+  border:1px solid var(--border); border-radius:8px; background:transparent; color:var(--muted);
+  font-family:'Orbitron',monospace; font-size:13px; font-weight:700; letter-spacing:1px; cursor:pointer;
+}
+.cmq-btn:hover { filter:brightness(1.2); border-color:var(--accent); }
+.cmq-btn.primary { background:var(--accent); border-color:var(--accent); color:var(--bg); }
+.cmq-btn.go { background:var(--green); border-color:var(--green); color:var(--bg); }
+/* Хуучин модалууд утсан дээр (намхан дэлгэц) гүйлгэгдэнэ */
+.pin-overlay, .game-end-overlay { overflow-y:auto; -webkit-overflow-scrolling:touch; padding:16px; align-items:flex-start; }
+.pin-box { margin:auto; max-width:100%; }
+.game-end-card { margin:auto; }
+@media (max-width: 480px) {
+  .home-inner { padding:28px 16px; }
+  .btn-home { padding:14px 26px; font-size:13px; }
+  .entry-card.sel-card { padding:28px 18px; }
+  .game-header { gap:8px; padding:10px 12px; }
+  .cmq-badge { margin:4px 0 0; }
+}
 </style>
 </head>
 <body>
@@ -621,10 +691,11 @@ body {
   <div class="home-bg" id="homeBg"></div>
   <div class="home-inner">
     <div class="logo-title">АЛГЕБРЫН<br><span>ТУЛААН</span></div>
-    <div class="logo-sub">8-9-р Анги · Математикийн Battleship</div>
+    <div class="logo-sub">6–12-р Анги · Математикийн Battleship</div>
     <div class="home-btns">
       <button class="btn-home btn-teacher" id="teacherBtn" onclick="checkTeacherPin()">🎓 БАГШ</button>
       <button class="btn-home btn-student" onclick="showScreen('entry')">🎯 СУРАГЧ</button>
+      <button class="btn-home btn-solo" id="soloBtn" onclick="openSolo()"><span class="bi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8"/></svg>ГАНЦААРАА</span></button>
     </div>
     <div class="home-hint">// алгебр бодоод · онгоц устга //</div>
   </div>
@@ -646,12 +717,14 @@ body {
       <div class="t-card">
         <div class="t-card-title">Тохиргоо</div>
         <input class="inp" id="roomNameInput" placeholder="Room-д нэр өгөх (жш: 10А анги)..." style="margin-bottom:8px;font-size:13px;padding:8px"/>
+        <div id="teacherSel" style="margin-bottom:14px"></div>
         <button class="t-btn" onclick="clearShips()">🗑 Цэвэрлэх</button>
         <button class="t-btn t-btn-primary" onclick="generateRoom()">⚡ Room үүсгэх</button>
         <button class="t-btn" onclick="openScoreboard()" style="border-color:#ffd60a;color:#ffd60a">🏆 Scoreboard харах</button>
         <div id="roomCodeBox" style="display:none" class="room-code-box">
           <div class="room-code-label">ROOM CODE</div>
           <div id="roomCodeName" style="font-size:13px;color:#82b1ff;margin-bottom:6px;font-weight:600"></div>
+          <div id="roomCodeSel" class="room-sel-line"></div>
           <div class="room-code-val" id="roomCodeVal"></div>
           <button onclick="copyRoomCode()" style="margin-top:10px;width:100%;padding:8px;background:#1a3a00;border:1px solid #4caf50;color:#a5d6a7;border-radius:3px;cursor:pointer;font-family:inherit;font-size:13px">📋 Code хуулах</button>
           <div id="copyDone" style="display:none;color:#69f0ae;font-size:12px;margin-top:6px;text-align:center">✅ Хуулагдлаа!</div>
@@ -668,9 +741,9 @@ body {
       </div>
       <div class="t-card">
         <div class="t-card-title">Онооны систем</div>
-        <div class="score-row"><span style="color:#4fc3f7">⭐ Хялбар (олон гишүүнт, квадрат)</span><span class="score-val">+3</span></div>
-        <div class="score-row"><span style="color:#ff7043">⭐⭐ Дунд (задлал, систем, прогресс)</span><span class="score-val">+7</span></div>
-        <div class="score-row"><span style="color:#ef5350">⭐⭐⭐ Хүнд (нийлмэл бодлогууд)</span><span class="score-val">+15</span></div>
+        <div class="score-row"><span style="color:#4fc3f7">⭐ Хялбар бодлого</span><span class="score-val">+3</span></div>
+        <div class="score-row"><span style="color:#ff7043">⭐⭐ Дунд бодлого</span><span class="score-val">+7</span></div>
+        <div class="score-row"><span style="color:#ef5350">⭐⭐⭐ Хүнд бодлого</span><span class="score-val">+15</span></div>
         <div class="score-row"><span style="color:#aaa">2 дараалал</span><span class="score-val">+бонус</span></div>
         <div class="score-row"><span style="color:#ef5350">Буруу хариу</span><span class="score-neg">-2</span></div>
       </div>
@@ -695,6 +768,22 @@ body {
   </div>
 </div>
 
+<!-- ═══ SOLO (ГАНЦААРАА) — backend шаардахгүй ═══ -->
+<div id="solo" class="screen">
+  <div style="padding:20px">
+    <button class="back-btn" onclick="showScreen('home')">← Буцах</button>
+  </div>
+  <div style="flex:1;display:flex;align-items:center;justify-content:center;padding:0 16px 24px">
+    <div class="entry-card sel-card">
+      <div class="entry-title">ГАНЦААРАА ТОГЛОХ</div>
+      <input class="inp" id="soloName" maxlength="30" placeholder="Нэрээ оруулна уу..." onkeydown="if(event.key==='Enter') startSolo()"/>
+      <div id="soloSel"></div>
+      <div class="solo-info">Онгоцнууд санамсаргүй байрлана (5 онгоц). Нүд бүрт сонгосон анги, сэдвийн бодлого гарна — зөв бодвол буудалт тооцогдоно. Багш, room шаардлагагүй.</div>
+      <button class="join-btn" id="soloGo" onclick="startSolo()" style="margin-top:16px;background:linear-gradient(135deg,#00796b,#004d40);border-color:var(--green)">ЭХЛЭХ →</button>
+    </div>
+  </div>
+</div>
+
 <!-- ═══ TURN SCREEN ═══ -->
 
 
@@ -704,8 +793,9 @@ body {
     <button class="back-btn" onclick="clearInterval(timerInterval);clearInterval(window._sbRefresh);stopLiveRankPoll();players=[];sessionStorage.removeItem('studentMode');showScreen('home')" style="color:var(--muted);border-color:var(--muted)">← Нүүр</button>
     <div>
       <div class="player-name" id="gamePlayerName"></div>
-      <span class="room-tag" id="gameRoomCode"></span>
+      <span class="room-tag" id="gameRoomCode"></span><span class="cmq-badge" id="cmqBadge" style="display:none"></span>
     </div>
+    <button class="back-btn" id="soloChangeBtn" onclick="soloChangeSel()" style="display:none">Анги / сэдэв</button>
     <div class="header-spacer"></div>
     <div id="liveRankBadge" style="display:none;font-family:'Orbitron',monospace;font-size:12px;font-weight:700;background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:4px 10px;color:var(--yellow)">🏅 —</div>
     <div class="score-display">
@@ -730,6 +820,7 @@ body {
         <div class="stat-row"><span>Зөв хариу</span><span id="statCorrect" style="color:var(--green)">0</span></div>
         <div class="stat-row"><span>Дараалал</span><span id="statStreak" style="color:var(--yellow)">🔥 0</span></div>
         <div class="stat-row"><span>Оноо</span><span id="statScore" style="color:#82b1ff;font-size:18px;font-weight:700">0</span></div>
+        <div class="stat-row" id="statShipsRow" style="display:none"><span>Устгасан онгоц</span><span id="statShips" style="color:#ef5350;font-weight:700">0 / 5</span></div>
       </div>
       <div id="liveScoreboardBox" style="margin-top:12px;background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:10px;min-width:180px">
         <div style="font-size:10px;color:var(--muted);letter-spacing:2px;margin-bottom:8px">🏆 SCOREBOARD</div>
@@ -998,6 +1089,487 @@ const PROBLEMS = {
 
 
 
+// ═══ CYBERMATH БОДЛОГЫН САН (CMQ) ═══
+// Бодлогыг https://cyber-math.com/api/questions?game=<анги>&topic=<node_id|0>&n=60 -аас татна
+// ({id,text,choices[4],correct,hint,difficulty,node_id}) → PROBLEMS-ийн бүтэц {q,opts,a,t,sol}.
+// Сонголт 4 (A–D) — зөв хариугүй 5 дахь сонголт НЭМЭХГҮЙ. difficulty: easy→empty, medium→hit, hard→sunk.
+// Сүлжээ тасарвал / сан хоосон бол дээрх PROBLEMS (жишиг сан) + «Офлайн — жишиг бодлого» тэмдэг.
+// URL ?grade=<6..12>&topic=<node_id|0> — анхны сонголт (Дасгалын төвөөс ирнэ). Эрх, үнэд нөлөөгүй.
+const CMQ = (function () {
+  const GRADES = ['6', '7', '8', '9', '10', '11', '12'];
+  const MIN_TOPIC = 10;           // сэдвийн жагсаалтад гарах доод бодлогын тоо
+  const ALL_ONLY = { '11': 1 };   // эдгээр ангид зөвхөн «Бүх сэдэв»
+  const N = 60;
+  const BUCKET = { easy: 'empty', medium: 'hit', hard: 'sunk' };
+  const ORDER = { empty: ['empty', 'hit', 'sunk'], hit: ['hit', 'empty', 'sunk'], sunk: ['sunk', 'hit', 'empty'] };
+  const LOCAL = /^(localhost|127\.0\.0\.1|\[::1\])$|\.localhost$/.test(location.hostname);
+  const qs = new URLSearchParams(location.search);
+  // cmapi-г зөвхөн локал хөгжүүлэлтэд зөвшөөрнө (гадны линкээр өөр сан тулгахаас сэргийлнэ)
+  const API = (LOCAL && /^https?:\/\//.test(qs.get('cmapi') || '') && qs.get('cmapi')) || 'https://cyber-math.com/api/questions';
+  const SEL_KEY = 'battle_cm_sel';
+
+  function normGrade(v) { v = String(v == null ? '' : v).trim(); return GRADES.indexOf(v) >= 0 ? v : null; }
+  function normTopic(v) { v = String(v == null ? '' : v).trim(); return /^\d{1,6}$/.test(v) ? String(parseInt(v, 10)) : null; }
+  // Анхдагч анги хостын нэрээр: 8-9-songon → 8, 10-11-songon → 10
+  function homeGrade() {
+    const m = /^(\d{1,2})-\d{1,2}-songon/i.exec(location.hostname) || /(\d{1,2})-\d{1,2}-р\s*анги/i.exec(document.title);
+    return (m && normGrade(m[1])) || '8';
+  }
+  function esc(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  }
+  // HTML escape ('$a<b$' innerHTML-д эвдрэхгүй) + $..$ хязгаарлагчийг MathJax-д үлдээнэ; томьёоноос гадуурх мөр шилжилт → <br>
+  function fmt(s) {
+    s = String(s == null ? '' : s);
+    const parts = s.split('$');
+    if (parts.length % 2 === 0) return esc(s).replace(/\n+/g, '<br>');
+    return parts.map((p, i) => i % 2 ? '$' + esc(p).replace(/\s*\n\s*/g, ' ') + '$' : esc(p).replace(/\n+/g, '<br>')).join('');
+  }
+  function fetchJSON(url, ms) {
+    const ctl = typeof AbortController === 'function' ? new AbortController() : null;
+    const tm = setTimeout(() => { if (ctl) ctl.abort(); }, ms);
+    return fetch(url, ctl ? { signal: ctl.signal } : undefined)
+      .then(r => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+      .then(j => { clearTimeout(tm); return j; }, e => { clearTimeout(tm); throw e; });
+  }
+
+  // ── Сэдвийн жагсаалт: ?game_topics=<анги> ──
+  const topicCache = {}, topicReq = {};
+  function topics(g) {
+    g = normGrade(g);
+    if (!g) return Promise.reject(new Error('grade'));
+    if (topicCache[g]) return Promise.resolve(topicCache[g]);
+    if (topicReq[g]) return topicReq[g];
+    topicReq[g] = fetchJSON(API + '?game_topics=' + g, 10000).then(j => {
+      if (!j || j.ok === false || !Array.isArray(j.chapters)) throw new Error('bad');
+      const out = { grade: g, total: +j.total || 0, chapters: [], names: {} };
+      j.chapters.forEach(ch => {
+        const list = [];
+        (ch && Array.isArray(ch.topics) ? ch.topics : []).forEach(t => {
+          const id = normTopic(t && t.id);
+          if (!id || id === '0') return;
+          const name = String(t.name || '').trim();
+          out.names[id] = name;
+          if ((+t.n || 0) >= MIN_TOPIC) list.push({ id, name: name || ('Сэдэв ' + id), n: +t.n || 0 });
+        });
+        if (list.length && !ALL_ONLY[g]) out.chapters.push({ name: String(ch.name || '').trim(), topics: list });
+      });
+      topicCache[g] = out;
+      delete topicReq[g];
+      return out;
+    }, e => { delete topicReq[g]; throw e; });
+    return topicReq[g];
+  }
+  function topicName(g, t) {
+    if (!t || t === '0') return 'Бүх сэдэв';
+    const c = topicCache[g];
+    return (c && c.names[t]) || '';
+  }
+
+  // ── Бодлогын сан: ?game=<анги>&topic=<id|0>&n=60 ──
+  let pool = null;   // {grade, topic, empty:[], hit:[], sunk:[], ids:Set, size, refilling, dry}
+  let status = { grade: null, topic: '0', name: '', offline: false, widened: false, loaded: false };
+  const used = new Set();
+
+  function shuffle(a) { for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+  function convert(q, names) {
+    if (!q || !Array.isArray(q.choices) || !String(q.text || '').trim()) return null;
+    const ch = q.choices.map(c => String(c == null ? '' : c).trim());
+    if (ch.length < 2 || ch.length > 5 || ch.some(c => !c) || new Set(ch).size !== ch.length) return null;
+    const right = String(q.correct == null ? '' : q.correct).trim();
+    if (ch.indexOf(right) < 0) return null;
+    shuffle(ch);
+    const h = q.hint && typeof q.hint === 'object' ? q.hint.text : q.hint;
+    const tn = String(q.topic_name || names[String(q.node_id)] || '');
+    return { id: 'cm' + q.id, q: fmt(q.text), opts: ch.map(fmt), a: 'ABCDE'[ch.indexOf(right)], t: esc(tn), sol: h ? fmt(h) : '', cm: 1 };
+  }
+  function addTo(p, list, names) {
+    let added = 0;
+    (list || []).forEach(raw => {
+      const q = convert(raw, names);
+      if (!q || p.ids.has(q.id)) return;
+      p.ids.add(q.id);
+      p[BUCKET[String(raw.difficulty || '').toLowerCase()] || 'hit'].push(q);
+      added++;
+    });
+    p.size += added;
+    return added;
+  }
+  function getQs(g, t) {
+    return fetchJSON(API + '?game=' + g + '&topic=' + t + '&n=' + N, 12000)
+      .then(j => (j && j.ok !== false && Array.isArray(j.questions)) ? j.questions : []);
+  }
+  // Хэзээ ч reject хийхгүй: амжилтгүй бол offline (PROBLEMS) төлөвт шилжинэ
+  function load(g, t, nameHint) {
+    g = normGrade(g) || homeGrade();
+    t = normTopic(t) || '0';
+    used.clear();
+    const tp = topics(g).catch(() => null);
+    // 4xx (жишээ нь хуучирсан/өөр ангийн сэдэв) → хоосон гэж үзээд бүх сэдэв рүү; сүлжээ/5xx → офлайн
+    const first = getQs(g, t).catch(e => (t !== '0' && /HTTP 4\d\d/.test(e && e.message)) ? [] : null);
+    return Promise.all([tp, first]).then(([tc, list]) => {
+      let widened = false;
+      // Сэдэвт тохирох бодлого алга бол ангийн бүх сэдвээс (topic=0)
+      const step = (list === null || list.length || t === '0') ? Promise.resolve(list)
+        : getQs(g, '0').then(l => { widened = true; return l; }).catch(() => null);
+      return step.then(l => {
+        const names = (tc && tc.names) || {};
+        const p = { grade: g, topic: widened ? '0' : t, empty: [], hit: [], sunk: [], ids: new Set(), size: 0, refilling: false, dry: false };
+        addTo(p, l, names);
+        pool = p.size ? p : null;
+        status = { grade: g, topic: p.topic, name: widened ? 'Бүх сэдэв' : (topicName(g, t) || String(nameHint || '')),
+                   offline: !p.size, widened, loaded: true };
+        return status;
+      });
+    }).catch(() => {
+      pool = null;
+      status = { grade: g, topic: t, name: '', offline: true, widened: false, loaded: true };
+      return status;
+    });
+  }
+  // Сан дуусах дөхвөл ар талд дахин татаж шинэ бодлогоор нөхнө
+  function maybeRefill() {
+    if (!pool || pool.refilling || pool.dry || used.size < pool.size - 8) return;
+    const p = pool;
+    p.refilling = true;
+    getQs(p.grade, p.topic).then(l => {
+      if (!addTo(p, l, (topicCache[p.grade] && topicCache[p.grade].names) || {})) p.dry = true;
+    }).catch(() => {}).then(() => { p.refilling = false; });
+  }
+  // Тухайн төрлийн савнаас давтаагүй бодлого; сав хоосон/дууссан бол бусад савнаас (12-р ангид зөвхөн medium)
+  function pick(type) {
+    if (!pool) return null;
+    const order = ORDER[type] || ORDER.hit;
+    for (let pass = 0; pass < 2; pass++) {
+      for (let i = 0; i < order.length; i++) {
+        const free = pool[order[i]].filter(q => !used.has(q.id));
+        if (free.length) {
+          const q = free[Math.floor(Math.random() * free.length)];
+          used.add(q.id);
+          maybeRefill();
+          return q;
+        }
+      }
+      used.clear();
+    }
+    return null;
+  }
+
+  // ── Сонголт: URL → сүүлд сонгосон → хостын анхдагч ──
+  const urlSel = normGrade(qs.get('grade')) ? { grade: normGrade(qs.get('grade')), topic: normTopic(qs.get('topic')) || '0' } : null;
+  function savedSel() {
+    try {
+      const o = JSON.parse(localStorage.getItem(SEL_KEY) || 'null');
+      return o && normGrade(o.grade) ? { grade: normGrade(o.grade), topic: normTopic(o.topic) || '0' } : null;
+    } catch (e) { return null; }
+  }
+  function remember(sel) { try { localStorage.setItem(SEL_KEY, JSON.stringify({ grade: sel.grade, topic: sel.topic, at: Date.now() })); } catch (e) {} }
+  function initialSel() { const s = urlSel || savedSel() || { grade: homeGrade(), topic: '0' }; return { grade: s.grade, topic: s.topic }; }
+  function label() {
+    if (!status.loaded) return '';
+    if (status.offline) return 'Офлайн — жишиг бодлого';
+    return status.grade + '-р анги · ' + (status.name || 'Бүх сэдэв');
+  }
+
+  return {
+    GRADES, ALL_ONLY, normGrade, normTopic, homeGrade, esc, fmt, topics, topicName, load, pick,
+    resetUsed: () => used.clear(), active: () => !!pool, status: () => status, label,
+    initialSel, remember, urlSel: () => urlSel,
+  };
+})();
+
+// MathJax ачаалагдаж дуусаагүй байсан ч томьёог дараа нь рендерлэнэ
+function mjx(el, tries) {
+  const M = window.MathJax;
+  if (!el || !M) return;
+  if (typeof M.typesetPromise === 'function') { M.typesetPromise([el]).catch(() => {}); return; }
+  if ((tries || 0) < 40) setTimeout(() => mjx(el, (tries || 0) + 1), 250);
+}
+
+// Оноо API: жинхэнэ сервер массив, локал mock {scores} буцаадаг
+function scoresArr(d) { return Array.isArray(d) ? d : (d && Array.isArray(d.scores) ? d.scores : []); }
+
+// ═══ МОДАЛ (утсан дээр гүйлгэгдэнэ) ═══
+const CMQ_ICONS = {
+  alert: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 2 21h20L12 3z"/><path d="M12 10v5"/><circle cx="12" cy="18" r=".8" fill="currentColor"/></svg>',
+  trophy: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 4h8v5a4 4 0 0 1-8 0V4z"/><path d="M16 5h3a3 3 0 0 1-3 4M8 5H5a3 3 0 0 0 3 4"/><path d="M12 13v4M8 21h8M9 17h6"/></svg>',
+};
+function closeCmqModals() { document.querySelectorAll('.cmq-modal').forEach(m => m.remove()); }
+function cmqModal(o) {
+  closeCmqModals();
+  const ov = document.createElement('div');
+  ov.className = 'cmq-modal';
+  const box = document.createElement('div');
+  box.className = 'cmq-modal-box';
+  box.setAttribute('role', 'dialog');
+  box.setAttribute('aria-modal', 'true');
+  if (o.icon && CMQ_ICONS[o.icon]) {
+    const ic = document.createElement('div');
+    ic.className = 'cmq-modal-ic';
+    if (o.color) ic.style.color = o.color;
+    ic.innerHTML = CMQ_ICONS[o.icon];
+    box.appendChild(ic);
+  }
+  const tt = document.createElement('div');
+  tt.className = 'cmq-modal-title';
+  tt.textContent = o.title || '';
+  box.appendChild(tt);
+  (o.lines || []).forEach(t => {
+    if (!t) return;
+    const p = document.createElement('div');
+    p.className = 'cmq-modal-text';
+    p.textContent = t;
+    box.appendChild(p);
+  });
+  if (o.stats) {
+    const w = document.createElement('div');
+    w.className = 'cmq-modal-stats';
+    o.stats.forEach(([v, l]) => {
+      const d = document.createElement('div');
+      d.className = 'cmq-modal-stat';
+      const b = document.createElement('b'); b.textContent = v;
+      const s = document.createElement('span'); s.textContent = l;
+      d.appendChild(b); d.appendChild(s); w.appendChild(d);
+    });
+    box.appendChild(w);
+  }
+  (o.buttons || [{ label: 'Хаах' }]).forEach(bt => {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'cmq-btn' + (bt.cls ? ' ' + bt.cls : '');
+    b.textContent = bt.label;
+    b.onclick = () => { ov.remove(); if (bt.fn) bt.fn(); };
+    box.appendChild(b);
+  });
+  ov.appendChild(box);
+  if (o.dismiss !== false) ov.addEventListener('click', e => { if (e.target === ov) ov.remove(); });
+  document.body.appendChild(ov);
+  return ov;
+}
+function serverDownModal(what) {
+  cmqModal({
+    icon: 'alert', color: '#ffb74d', title: 'СЕРВЕР АЖИЛЛАХГҮЙ БАЙНА',
+    lines: [what, 'Багшийн room-той горим түр ажиллахгүй байна. «Ганцаараа» горимд сервер шаардлагагүй — онгоцнууд санамсаргүй байрлана.'],
+    buttons: [{ label: 'Ганцаараа тоглох', cls: 'go', fn: openSolo }, { label: 'Хаах' }],
+  });
+}
+
+// ═══ АНГИ / СЭДЭВ СОНГОГЧ ═══
+// st = {grade, topic} объектыг шууд өөрчилнө (Ганцаараа, Багшийн room хоёуланд)
+function selMount(boxId, st) {
+  const box = document.getElementById(boxId);
+  if (!box) return null;
+  box.innerHTML = '<div class="sel-label">Анги</div><div class="grade-chips"></div>' +
+    '<div class="sel-label">Сэдэв</div><select class="inp sel-topic" aria-label="Сэдэв"></select><div class="sel-note"></div>';
+  const chips = box.querySelector('.grade-chips');
+  const sel = box.querySelector('select');
+  const note = box.querySelector('.sel-note');
+  CMQ.GRADES.forEach(g => {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'grade-chip';
+    b.textContent = g;
+    b.dataset.g = g;
+    b.title = g + '-р анги';
+    b.setAttribute('aria-label', g + '-р анги');
+    b.onclick = () => { if (st.grade !== g) { st.grade = g; st.topic = '0'; render(); } };
+    chips.appendChild(b);
+  });
+  sel.onchange = () => { st.topic = CMQ.normTopic(sel.value) || '0'; };
+  const opt = (v, txt) => { const o = document.createElement('option'); o.value = v; o.textContent = txt; return o; };
+  let seq = 0;
+  function render() {
+    chips.querySelectorAll('.grade-chip').forEach(b => {
+      const on = b.dataset.g === st.grade;
+      b.classList.toggle('on', on);
+      b.setAttribute('aria-pressed', on ? 'true' : 'false');
+    });
+    const my = ++seq;
+    sel.innerHTML = '';
+    sel.appendChild(opt(st.topic, 'Ачаалж байна...'));
+    sel.disabled = true;
+    note.textContent = '';
+    note.className = 'sel-note';
+    CMQ.topics(st.grade).then(tc => {
+      if (my !== seq) return;
+      sel.innerHTML = '';
+      sel.appendChild(opt('0', 'Бүх сэдэв'));
+      let found = st.topic === '0';
+      tc.chapters.forEach(ch => {
+        let parent = sel;
+        if (ch.name) { parent = document.createElement('optgroup'); parent.label = ch.name; sel.appendChild(parent); }
+        ch.topics.forEach(t => { parent.appendChild(opt(t.id, t.name)); if (t.id === st.topic) found = true; });
+      });
+      if (!found) st.topic = '0';
+      sel.value = st.topic;
+      sel.disabled = false;
+      if (!tc.total) {
+        note.textContent = 'Энэ ангийн бодлого одоогоор алга — жишиг бодлогоор тоглоно.';
+        note.className = 'sel-note warn';
+      } else if (!tc.chapters.length) {
+        note.textContent = 'Энэ ангид одоогоор зөвхөн «Бүх сэдэв» сонголт боломжтой.';
+      }
+    }).catch(() => {
+      if (my !== seq) return;
+      sel.innerHTML = '';
+      sel.appendChild(opt('0', 'Бүх сэдэв'));
+      if (st.topic !== '0') sel.appendChild(opt(st.topic, 'Сонгосон сэдэв'));
+      sel.value = st.topic;
+      sel.disabled = false;
+      note.textContent = 'Сэдвийн жагсаалт ачаалагдсангүй. Сүлжээ тасарсан бол жишиг бодлогоор тоглоно.';
+      note.className = 'sel-note warn';
+    });
+  }
+  render();
+  return {
+    render,
+    set(g, t) { st.grade = CMQ.normGrade(g) || st.grade; st.topic = CMQ.normTopic(t) || '0'; render(); },
+  };
+}
+function selText(grade, topic, topicName) {
+  grade = CMQ.normGrade(grade);
+  if (!grade) return '';
+  const t = CMQ.normTopic(topic) || '0';
+  return grade + '-р анги · ' + (t === '0' ? 'Бүх сэдэв' : (topicName || CMQ.topicName(grade, t) || 'Сонгосон сэдэв'));
+}
+
+// ═══ ГАНЦААРАА ГОРИМ — backend шаардахгүй, онгоц санамсаргүй ═══
+const SOLO = { on: false, fleet: [], sel: CMQ.initialSel() };
+const TSEL = CMQ.initialSel();   // багшийн room-ын анги/сэдэв
+const SOLO_SIZES = [5, 4, 3, 3, 2];
+let soloSelUI = null, teacherSelUI = null;
+
+function openSolo() {
+  closeCmqModals();
+  clearInterval(window._sbRefresh);
+  SOLO.on = false;
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('solo').classList.add('active');
+  const nm = document.getElementById('soloName');
+  if (nm && !nm.value) { try { nm.value = localStorage.getItem('battle_solo_name') || ''; } catch (e) {} }
+  if (soloSelUI) soloSelUI.render();
+}
+function soloChangeSel() { openSolo(); }
+
+// Онгоцнууд бие биендээ (диагональ ч) хүрэхгүй байрлана; онгоц бүрийн эхний нүд = толгой (★ → С)
+function randomFleet() {
+  for (let attempt = 0; attempt < 100; attempt++) {
+    const block = new Set(), fleet = [];
+    let ok = true;
+    for (const len of SOLO_SIZES) {
+      let placed = null;
+      for (let tries = 0; tries < 300 && !placed; tries++) {
+        const hor = Math.random() < 0.5;
+        const r = Math.floor(Math.random() * (hor ? ROWS.length : ROWS.length - len + 1));
+        const c = Math.floor(Math.random() * (hor ? COLS.length - len + 1 : COLS.length));
+        const cells = [];
+        for (let k = 0; k < len; k++) cells.push([hor ? r : r + k, hor ? c + k : c]);
+        if (!cells.some(([y, x]) => block.has(y + ',' + x))) placed = cells;
+      }
+      if (!placed) { ok = false; break; }
+      placed.forEach(([y, x]) => { for (let dy = -1; dy <= 1; dy++) for (let dx = -1; dx <= 1; dx++) block.add((y + dy) + ',' + (x + dx)); });
+      fleet.push(placed.map(([y, x]) => ROWS[y] + COLS[x]));
+    }
+    if (ok) return { fleet, ships: [].concat(...fleet), heads: fleet.map(s => s[0]) };
+  }
+  return null;
+}
+function soloApplyFleet(f) { shipCells = new Set(f.ships); headCells = new Set(f.heads); SOLO.fleet = f.fleet; }
+function soloClearSaved(savedKey) {
+  try { ['solofleet_' + savedKey, savedKey, 'stats_' + savedKey].forEach(k => localStorage.removeItem(k)); } catch (e) {}
+}
+function soloNewFleet(savedKey) {
+  const f = randomFleet();
+  soloApplyFleet(f);
+  soloClearSaved(savedKey);
+  try { localStorage.setItem('solofleet_' + savedKey, JSON.stringify(f)); } catch (e) {}
+}
+function startSolo() {
+  const btn = document.getElementById('soloGo');
+  if (!btn || btn.disabled) return;
+  const nmEl = document.getElementById('soloName');
+  const name = ((nmEl && nmEl.value.trim()) || 'Тоглогч').slice(0, 30);
+  try { localStorage.setItem('battle_solo_name', nmEl ? nmEl.value.trim() : ''); } catch (e) {}
+  const sel = { grade: SOLO.sel.grade, topic: SOLO.sel.topic };
+  const fromScreen = (document.querySelector('.screen.active') || {}).id;
+  btn.disabled = true;
+  btn.textContent = 'Бодлого ачаалж байна...';
+  CMQ.load(sel.grade, sel.topic).then(() => {
+    btn.disabled = false;
+    btn.textContent = 'ЭХЛЭХ →';
+    // Ачаалж байх хооронд хэрэглэгч өөр дэлгэц рүү шилжсэн бол тоглоом руу албадан оруулахгүй
+    if ((document.querySelector('.screen.active') || {}).id !== fromScreen) return;
+    CMQ.remember(sel);
+    closeCmqModals();
+    SOLO.on = true;
+    activeCard = null; selectedCell = null; cardLocked = false; selectedChoice = null;
+    currentRoomCode = 'SOLO-' + sel.grade + '-' + sel.topic;
+    players = [{ name, score: 0, shots: 0, correct: 0, streak: 0 }];
+    currentTurn = 0;
+    const savedKey = 'cells_' + currentRoomCode + '_' + name;
+    let fleet = null, cells = {}, st = {};
+    try {
+      fleet = JSON.parse(localStorage.getItem('solofleet_' + savedKey) || 'null');
+      cells = JSON.parse(localStorage.getItem(savedKey) || '{}') || {};
+      st = JSON.parse(localStorage.getItem('stats_' + savedKey) || '{}') || {};
+    } catch (e) { fleet = null; }
+    if (fleet && Array.isArray(fleet.ships) && Array.isArray(fleet.heads) && Array.isArray(fleet.fleet) &&
+        (st.shots > 0 || Object.keys(cells).length)) {
+      soloApplyFleet(fleet);
+      showContinueDialog(savedKey, cells, st.score || 0, st.shots || 0, st.correct || 0, st.streak || 0, [name]);
+      window._continueData.solo = true;
+    } else {
+      soloNewFleet(savedKey);
+      launchGame(savedKey, {}, 0, 0, 0, 0, [name]);
+    }
+  });
+}
+function soloSunk() {
+  return SOLO.fleet.filter(s => s.every(c => gameState.cells[c] && gameState.cells[c].resolved)).length;
+}
+function soloUpdateShips() {
+  const el = document.getElementById('statShips');
+  if (el) el.textContent = soloSunk() + ' / ' + SOLO.fleet.length;
+}
+function soloCheckEnd() {
+  soloUpdateShips();
+  if (!SOLO.fleet.length || soloSunk() < SOLO.fleet.length) return;
+  soloClearSaved('cells_' + currentRoomCode + '_' + currentPlayerName);
+  const s = { score: gameState.score, shots: gameState.shots, correct: gameState.correct };
+  setTimeout(() => {
+    if (!SOLO.on) return;
+    const acc = s.shots ? Math.round(s.correct / s.shots * 100) : 0;
+    cmqModal({
+      icon: 'trophy', color: 'var(--yellow)', title: 'БҮХ ОНГОЦ УСТЛАА',
+      lines: [CMQ.label()],
+      stats: [[s.score, 'оноо'], [s.shots, 'буудалт'], [acc + '%', 'нарийвчлал']],
+      buttons: [
+        { label: 'Дахин тоглох', cls: 'go', fn: startSolo },
+        { label: 'Анги / сэдэв солих', fn: openSolo },
+        { label: 'Нүүр хуудас', fn: () => showScreen('home') },
+      ],
+      dismiss: false,
+    });
+  }, 1200);
+}
+// Тоглоомын толгой хэсэг: room/ганцаараа, анги·сэдэв эсвэл «Офлайн» тэмдэг
+function renderGameBadges() {
+  const rc = document.getElementById('gameRoomCode');
+  if (rc) rc.textContent = SOLO.on ? 'Ганцаараа' : (currentRoomCode ? 'Room ' + currentRoomCode : '');
+  const b = document.getElementById('cmqBadge');
+  if (b) {
+    const t = CMQ.label();
+    b.textContent = t;
+    b.style.display = t ? '' : 'none';
+    b.classList.toggle('offline', !!CMQ.status().offline);
+  }
+  const show = (id, on) => { const e = document.getElementById(id); if (e) e.style.display = on ? '' : 'none'; };
+  show('soloChangeBtn', SOLO.on);
+  show('statShipsRow', SOLO.on);
+  show('liveScoreboardBox', !SOLO.on);
+  if (SOLO.on) soloUpdateShips();
+}
+
 // ═══ STATE ═══
 let shipCells = new Set();
 let headCells = new Set(); // онгоцны толгой нүдүүд
@@ -1047,8 +1619,16 @@ function startMultiGame() {
   btn.textContent = 'Уншиж байна...';
 
   fetch('/api/room?code=' + encodeURIComponent(code))
-    .then(r => { if (!r.ok) throw new Error('not found'); return r.json(); })
+    .then(r => { if (!r.ok) { const e = new Error('room'); e.status = r.status || 404; throw e; } return r.json(); })
     .then(data => {
+      // Room-ын анги/сэдвээр cyber-math-ийн сангаас бодлого татна (хуучин room: хостын анхдагч анги, бүх сэдэв)
+      const rg = CMQ.normGrade(data.grade);
+      btn.textContent = 'Бодлого ачаалж байна...';
+      return CMQ.load(rg || CMQ.homeGrade(), rg ? (CMQ.normTopic(data.topic) || '0') : '0', data.topicName)
+        .then(() => data);
+    })
+    .then(data => {
+      SOLO.on = false;
       shipCells = new Set(data.ships || []);
       headCells = new Set(data.heads || []);
       currentRoomCode = code;
@@ -1080,10 +1660,11 @@ function startMultiGame() {
         launchGame(savedKey, {}, 0, 0, 0, 0, names);
       }
     })
-    .catch(() => {
-      alert('Room code олдсонгүй!\nБагш эхлээд "Room үүсгэх" дарна уу.');
+    .catch(err => {
       btn.disabled = false;
       btn.textContent = 'ТОГЛООМ ЭХЛЭХ →';
+      if (err && err.status >= 400 && err.status < 500) alert('Room code олдсонгүй!\nБагш эхлээд "Room үүсгэх" дарна уу.');
+      else serverDownModal('Room-ын мэдээллийг серверээс уншиж чадсангүй.');
     });
 }
 
@@ -1116,6 +1697,7 @@ function continueGame(resume) {
   if (resume) {
     launchGame(d.savedKey, d.savedCells, d.savedScore, d.savedShots, d.savedCorrect, d.savedStreak, d.names);
   } else {
+    if (d.solo) soloNewFleet(d.savedKey);   // Ганцаараа: шинээр эхлэхэд шинэ санамсаргүй онгоцнууд
     launchGame(d.savedKey, {}, 0, 0, 0, 0, d.names);
   }
   window._continueData = null;
@@ -1153,6 +1735,10 @@ function beginTurn() {
   };
   // Шинэ тоглогч — бодлогын давталтыг reset хийх
   window._usedProblems = { empty: new Set(), hit: new Set(), sunk: new Set() };
+  CMQ.resetUsed();
+  renderGameBadges();
+  document.getElementById('lastShot').textContent = '';
+  document.getElementById('streakBadge').style.display = 'none';
 
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.getElementById('game').classList.add('active');
@@ -1227,6 +1813,8 @@ function showScreen(id) {
 
   if (id === 'home') {
     // Нүүр хуудас руу буцахад бүгдийг цэвэрлэнэ
+    SOLO.on = false;
+    closeCmqModals();
     if (window._sbPoll) { clearInterval(window._sbPoll); window._sbPoll = null; }
     if (window._sbRefresh) { clearInterval(window._sbRefresh); window._sbRefresh = null; }
     players = [];
@@ -1316,10 +1904,14 @@ function openTeacherScreen() {
           document.getElementById('roomCodeVal').textContent = teacherRoomCode;
           const nameEl = document.getElementById('roomCodeName');
           if (nameEl && myRooms[0].name) nameEl.textContent = '📌 ' + myRooms[0].name;
+          const selEl = document.getElementById('roomCodeSel');
+          if (selEl) selEl.textContent = selText(data.grade, data.topic, data.topicName);
+          if (CMQ.normGrade(data.grade) && teacherSelUI) teacherSelUI.set(data.grade, data.topic);
           document.getElementById('roomCodeBox').style.display = 'block';
         } else {
           shipCells = new Set();
           headCells = new Set();
+          document.getElementById('roomCodeBox').style.display = 'none';   // room устсан / сервер ажиллахгүй
         }
         buildTeacherGrid();
         document.getElementById('shipCount').textContent = shipCells.size + ' нүд, ' + headCells.size + ' толгой';
@@ -1472,15 +2064,20 @@ function generateRoom() {
     heads: [...headCells],
     code: roomCode,
     name: roomName,
-    created: Date.now()
+    created: Date.now(),
+    // Сурагчид энэ анги/сэдвээр cyber-math-ийн сангаас бодлого авна
+    grade: TSEL.grade,
+    topic: TSEL.topic,
+    topicName: TSEL.topic === '0' ? 'Бүх сэдэв' : CMQ.topicName(TSEL.grade, TSEL.topic)
   };
 
   fetch('/api/room', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(roomData)
-  }).then(r => r.json()).then(res => {
-    if (res.ok) {
+  }).then(r => r.json().catch(() => ({})).then(j => ({ http: r.status, ok: r.ok, j }))).then(({ http, ok, j }) => {
+    const res = j || {};
+    if (ok && res.ok) {
       // Энэ багшийн room-уудыг localStorage-д PIN-тэй холбон хадгалах
       const pin = getTeacherPin();
       const key = 'myrooms_' + pin;
@@ -1494,12 +2091,16 @@ function generateRoom() {
       document.getElementById('roomCodeVal').textContent = roomCode;
       const nameEl = document.getElementById('roomCodeName');
       if (nameEl) nameEl.textContent = '📌 ' + roomName;
+      const selEl = document.getElementById('roomCodeSel');
+      if (selEl) selEl.textContent = selText(roomData.grade, roomData.topic, roomData.topicName);
       document.getElementById('roomCodeBox').style.display = 'block';
+    } else if (http >= 500) {
+      serverDownModal('Room үүсгэж чадсангүй.');
     } else {
       alert('Алдаа: ' + (res.error || 'Room үүсгэж чадсангүй'));
     }
   }).catch(() => {
-    alert('Сервертэй холбогдож чадсангүй.');
+    serverDownModal('Сервертэй холбогдож чадсангүй.');
   });
 }
 
@@ -1645,6 +2246,9 @@ function pickCardType(isShip) {
 }
 
 function randProblem(type) {
+  // cyber-math-ийн сан ачаалагдсан бол түүнээс; эс бөгөөс доорх жишиг PROBLEMS (офлайн)
+  const cm = CMQ.pick(type);
+  if (cm) return cm;
   const arr = PROBLEMS[type];
   // Давтаагүй бодлого сонгох
   if (!window._usedProblems) window._usedProblems = { empty: new Set(), hit: new Set(), sunk: new Set() };
@@ -1688,7 +2292,7 @@ function showCard(card) {
       ${choicesHTML}
     </div>
   `;
-  if (window.MathJax) MathJax.typesetPromise([area]);
+  mjx(area);
 }
 
 function mathKbdInput(val) {
@@ -1782,16 +2386,16 @@ function checkAnswer() {
   // Бодолт товч
   if (solText) {
     const solBtn = document.createElement('button');
-    solBtn.textContent = '📖 Бодолт харах';
+    solBtn.textContent = activeCard.problem.cm ? 'Санамж харах' : '📖 Бодолт харах';
     solBtn.style.cssText = 'display:block;margin-top:8px;background:transparent;border:1px solid currentColor;color:inherit;padding:4px 12px;border-radius:4px;cursor:pointer;font-family:inherit;font-size:12px;width:100%';
     solBtn.onclick = () => {
       const solDiv = document.createElement('div');
       solDiv.style.cssText = 'margin-top:8px;padding:10px;background:rgba(0,0,0,0.4);border-radius:6px;font-size:13px;color:#e0e0e0;font-weight:400;text-align:left;line-height:1.6';
       solDiv.innerHTML = solText;
       solBtn.replaceWith(solDiv);
-      if (window.MathJax) MathJax.typesetPromise([solDiv]);
+      mjx(solDiv);
       // nextBtn-г ✖ Хаах болгох
-      const nb = document.querySelector('#cardArea .card button:last-child');
+      const nb = document.getElementById('nextShotBtn');   // (button:last-child нь сүүлийн сонголтыг барьдаг байсан)
       if (nb) { nb.textContent = '✖ Хаах'; nb.style.background = 'transparent'; nb.style.border = '1px solid var(--muted)'; nb.style.color = 'var(--muted)'; nb.style.fontWeight = '400'; }
     };
     feedbackEl.appendChild(solBtn);
@@ -1810,10 +2414,11 @@ function checkAnswer() {
 
   document.getElementById('gameScore').textContent = gameState.score;
   updateStats();
+  if (SOLO.on) soloCheckEnd();
 
-  // Явцын оноо хадгалах — сурагч гараагүй ч бүртгэгдэнэ
+  // Явцын оноо хадгалах — сурагч гараагүй ч бүртгэгдэнэ (Ганцаараа горимд сервер рүү илгээхгүй)
   const p_curr = players[currentTurn];
-  if (p_curr) {
+  if (p_curr && !SOLO.on) {
     p_curr.score   = gameState.score;
     p_curr.shots   = gameState.shots;
     p_curr.correct = gameState.correct;
@@ -1825,6 +2430,7 @@ function checkAnswer() {
 
   // Дараагийн буудалт товч нэмэх
   const nextBtn = document.createElement('button');
+  nextBtn.id = 'nextShotBtn';
   nextBtn.textContent = '▶ Дараагийн буудалт';
   nextBtn.style.cssText = 'display:block;margin-top:10px;width:100%;padding:8px;background:var(--accent);border:none;color:#000;border-radius:4px;cursor:pointer;font-family:inherit;font-size:13px;font-weight:700';
   nextBtn.onclick = () => {
@@ -1874,11 +2480,12 @@ function stopLiveRankPoll() {
 function pollLiveRank() {
   const code = currentRoomCode;
   const name = currentPlayerName;
-  if (!code || !name) return;
+  if (!code || !name || SOLO.on) return;
 
   fetch('/api/score?code=' + encodeURIComponent(code))
     .then(r => r.json())
     .then(arr => {
+      arr = scoresArr(arr);
       if (!arr.length) return;
       arr.sort((a, b) => b.score - a.score);
       const idx = arr.findIndex(r => r.name === name);
@@ -1917,15 +2524,15 @@ function updateStats() {
 
 function updateLiveScoreboard() {
   const list = document.getElementById('liveScoreboardList');
-  if (!list || !currentRoomCode) return;
+  if (!list || !currentRoomCode || SOLO.on) return;
   fetch('/api/score?code=' + encodeURIComponent(currentRoomCode))
     .then(r => r.json())
     .then(data => {
       const medals = ['🥇','🥈','🥉'];
-      const sorted = (data.scores || []).sort((a,b) => b.score - a.score).slice(0,10);
+      const sorted = scoresArr(data).sort((a,b) => b.score - a.score).slice(0,10);
       list.innerHTML = sorted.map((p, i) => `
         <div style="display:flex;justify-content:space-between;align-items:center;padding:4px 0;border-bottom:1px solid var(--border);font-size:12px">
-          <span>${i < 3 ? medals[i] : (i+1)+'.'} <span style="color:var(--text)">${p.name}</span></span>
+          <span>${i < 3 ? medals[i] : (i+1)+'.'} <span style="color:var(--text)">${CMQ.esc(p.name)}</span></span>
           <span style="color:#82b1ff;font-weight:700">${p.score}</span>
         </div>`).join('');
     }).catch(() => {});
@@ -2054,13 +2661,14 @@ function renderScoreboard() {
 
   function pollScores() {
     fetch('/api/score?code=' + encodeURIComponent(code))
-      .then(r => r.json())
+      .then(r => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
       .then(arr => {
+        arr = scoresArr(arr);
         arr.sort((a,b) => b.score - a.score);
         renderScoreTable(content, arr, code);
       })
       .catch(() => {
-        renderScoreTable(content, [], code);
+        content.innerHTML = '<div class="sb-empty">Сервертэй холбогдож чадсангүй — оноо уншигдсангүй.<br><small style="color:#4a6080">Сервер ажиллахгүй байгаа үед «Ганцаараа» горимоор тоглож болно.</small></div>';
       });
   }
   pollScores();
@@ -2134,7 +2742,7 @@ function renderScoreTable(content, arr, code) {
                 : `<span class="sb-rank">${i+1}</span>`}
             </td>
             <td>
-              <div style="font-weight:700;font-size:14px">${r.name}</div>
+              <div style="font-weight:700;font-size:14px">${CMQ.esc(r.name)}</div>
               <div style="font-size:11px;color:var(--muted)">${r.correct||0} зөв · ${wrong} буруу</div>
             </td>
             <td><span class="sb-score">${r.score}</span></td>
@@ -2191,7 +2799,7 @@ function showStudentDetail(r) {
   ov.innerHTML = `
     <div class="game-end-card" style="max-width:380px">
       <div class="end-title">СУРАГЧИЙН МЭДЭЭЛЭЛ</div>
-      <div class="end-name">${r.name}</div>
+      <div class="end-name">${CMQ.esc(r.name)}</div>
 
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px">
         <div style="background:var(--bg);border-radius:8px;padding:12px;text-align:center">
@@ -2358,6 +2966,12 @@ function submitPin() {
     setTimeout(() => { inp.classList.remove('shake'); inp.placeholder = '••••'; }, 600);
   }
 }
+
+// ═══ АНГИ / СЭДЭВ СОНГОГЧИЙГ ЭХЛҮҮЛЭХ ═══
+soloSelUI = selMount('soloSel', SOLO.sel);
+teacherSelUI = selMount('teacherSel', TSEL);
+// Дасгалын төвөөс ?grade=&topic=-тэй ирвэл шууд «Ганцаараа» (сонголт урьдчилан бөглөгдсөн, сольж болно)
+if (CMQ.urlSel()) openSolo();
 </script>
 </body>
 </html>

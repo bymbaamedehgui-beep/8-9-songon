@@ -8,6 +8,7 @@ async function redis(cmd) {
     headers: { Authorization: 'Bearer ' + T, 'Content-Type': 'application/json' },
     body: JSON.stringify(cmd)
   });
+  if (!res.ok) throw new Error('Upstash HTTP ' + res.status);
   const j = await res.json();
   return j.result;
 }
@@ -22,12 +23,24 @@ async function set(key, val) {
   return redis(['SET', key, JSON.stringify(val)]);
 }
 
+// Upstash env байхгүй / холбогдож чадаагүй үед 500 (FUNCTION_INVOCATION_FAILED) биш ойлгомжтой JSON буцаана.
+const NO_BACKEND = { error: 'Сервер тохируулагдаагүй байна (UPSTASH_REDIS_REST_URL / UPSTASH_REDIS_REST_TOKEN алга). Оноо хадгалагдахгүй.', code: 'NO_BACKEND' };
+
 module.exports = async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, DELETE, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
   if (req.method === 'OPTIONS') return res.status(200).end();
+  if (!R || !T) return res.status(503).json(NO_BACKEND);
+  try {
+    return await route(req, res);
+  } catch (e) {
+    console.error('api/score:', e && e.message);
+    return res.status(502).json({ error: 'Өгөгдлийн сантай холбогдож чадсангүй. Түр хүлээгээд дахин оролдоно уу.', code: 'BACKEND_ERROR' });
+  }
+};
 
+async function route(req, res) {
   // GET /api/score?code=TS12-ABC3 → тухайн room-ын бүх оноо
   if (req.method === 'GET') {
     const { code } = req.query;
