@@ -632,6 +632,9 @@ body {
 }
 .grade-chip:hover { border-color:var(--accent); color:#fff; }
 .grade-chip.on { background:#0a2a4a; border-color:var(--accent); color:var(--accent); box-shadow:0 0 10px #00b4d855; }
+.grade-chip.soon, .grade-chip.soon:hover { opacity:.45; cursor:not-allowed; border-style:dashed; border-color:var(--border); color:var(--muted); }
+.sel-soon { display:flex; align-items:center; gap:6px; margin-top:6px; font-size:11px; color:var(--muted); line-height:1.5; }
+.sel-soon svg { width:13px; height:13px; flex-shrink:0; }
 .sel-topic { margin-bottom:6px; font-size:13px; padding:10px 12px; }
 .sel-topic:disabled { opacity:.6; }
 .sel-note { font-size:11px; color:var(--muted); line-height:1.6; }
@@ -1099,6 +1102,7 @@ const CMQ = (function () {
   const GRADES = ['6', '7', '8', '9', '10', '11', '12'];
   const MIN_TOPIC = 10;           // сэдвийн жагсаалтад гарах доод бодлогын тоо
   const ALL_ONLY = { '11': 1 };   // эдгээр ангид зөвхөн «Бүх сэдэв»
+  const SOON = { '11': 1 };       // «Тун удахгүй» — сонгогчид харагдана, сонгогдохгүй (URL/хадгалсан/room-оос ч)
   const N = 60;
   const BUCKET = { easy: 'empty', medium: 'hit', hard: 'sunk' };
   const ORDER = { empty: ['empty', 'hit', 'sunk'], hit: ['hit', 'empty', 'sunk'], sunk: ['sunk', 'hit', 'empty'] };
@@ -1110,10 +1114,12 @@ const CMQ = (function () {
 
   function normGrade(v) { v = String(v == null ? '' : v).trim(); return GRADES.indexOf(v) >= 0 ? v : null; }
   function normTopic(v) { v = String(v == null ? '' : v).trim(); return /^\d{1,6}$/.test(v) ? String(parseInt(v, 10)) : null; }
+  // Сонгож болох анги (6–12, «Тун удахгүй» биш)
+  function pickGrade(v) { v = normGrade(v); return v && !SOON[v] ? v : null; }
   // Анхдагч анги хостын нэрээр: 8-9-songon → 8, 10-11-songon → 10
   function homeGrade() {
     const m = /^(\d{1,2})-\d{1,2}-songon/i.exec(location.hostname) || /(\d{1,2})-\d{1,2}-р\s*анги/i.exec(document.title);
-    return (m && normGrade(m[1])) || '8';
+    return (m && pickGrade(m[1])) || '8';
   }
   function esc(s) {
     return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -1201,7 +1207,8 @@ const CMQ = (function () {
   }
   // Хэзээ ч reject хийхгүй: амжилтгүй бол offline (PROBLEMS) төлөвт шилжинэ
   function load(g, t, nameHint) {
-    g = normGrade(g) || homeGrade();
+    if (!pickGrade(g)) t = '0';
+    g = pickGrade(g) || homeGrade();
     t = normTopic(t) || '0';
     used.clear();
     const tp = topics(g).catch(() => null);
@@ -1209,9 +1216,11 @@ const CMQ = (function () {
     const first = getQs(g, t).catch(e => (t !== '0' && /HTTP 4\d\d/.test(e && e.message)) ? [] : null);
     return Promise.all([tp, first]).then(([tc, list]) => {
       let widened = false;
-      // Сэдэвт тохирох бодлого алга бол ангийн бүх сэдвээс (topic=0)
-      const step = (list === null || list.length || t === '0') ? Promise.resolve(list)
-        : getQs(g, '0').then(l => { widened = true; return l; }).catch(() => null);
+      // Сэдэвт бодлого дутуу (MIN_TOPIC-оос цөөн, 9-р ангийн жижиг сэдэв) бол ангийн бүх сэдвээс (topic=0);
+      // бүх сэдвийн татаалт бүтэлгүйтвэл сэдвийн цөөн бодлогоороо үргэлжилнэ
+      const step = (list === null || list.length >= MIN_TOPIC || t === '0') ? Promise.resolve(list)
+        : getQs(g, '0').then(l => { if (l && l.length) { widened = true; return l; } return list; })
+          .catch(() => (list.length ? list : null));
       return step.then(l => {
         const names = (tc && tc.names) || {};
         const p = { grade: g, topic: widened ? '0' : t, empty: [], hit: [], sunk: [], ids: new Set(), size: 0, refilling: false, dry: false };
@@ -1256,11 +1265,13 @@ const CMQ = (function () {
   }
 
   // ── Сонголт: URL → сүүлд сонгосон → хостын анхдагч ──
-  const urlSel = normGrade(qs.get('grade')) ? { grade: normGrade(qs.get('grade')), topic: normTopic(qs.get('topic')) || '0' } : null;
+  // «Тун удахгүй» анги URL-аар ирвэл хостын анхдагч анги, «Бүх сэдэв»
+  const urlSel = pickGrade(qs.get('grade')) ? { grade: pickGrade(qs.get('grade')), topic: normTopic(qs.get('topic')) || '0' }
+    : normGrade(qs.get('grade')) ? { grade: homeGrade(), topic: '0' } : null;
   function savedSel() {
     try {
       const o = JSON.parse(localStorage.getItem(SEL_KEY) || 'null');
-      return o && normGrade(o.grade) ? { grade: normGrade(o.grade), topic: normTopic(o.topic) || '0' } : null;
+      return o && pickGrade(o.grade) ? { grade: pickGrade(o.grade), topic: normTopic(o.topic) || '0' } : null;
     } catch (e) { return null; }
   }
   function remember(sel) { try { localStorage.setItem(SEL_KEY, JSON.stringify({ grade: sel.grade, topic: sel.topic, at: Date.now() })); } catch (e) {} }
@@ -1272,7 +1283,7 @@ const CMQ = (function () {
   }
 
   return {
-    GRADES, ALL_ONLY, normGrade, normTopic, homeGrade, esc, fmt, topics, topicName, load, pick,
+    GRADES, ALL_ONLY, SOON, normGrade, pickGrade, normTopic, homeGrade, esc, fmt, topics, topicName, load, pick,
     resetUsed: () => used.clear(), active: () => !!pool, status: () => status, label,
     initialSel, remember, urlSel: () => urlSel,
   };
@@ -1359,7 +1370,10 @@ function serverDownModal(what) {
 function selMount(boxId, st) {
   const box = document.getElementById(boxId);
   if (!box) return null;
+  const soon = CMQ.GRADES.filter(g => CMQ.SOON[g]);
   box.innerHTML = '<div class="sel-label">Анги</div><div class="grade-chips"></div>' +
+    (soon.length ? '<div class="sel-soon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span>' +
+      soon.map(g => g + '-р анги').join(', ') + ' — Тун удахгүй</span></div>' : '') +
     '<div class="sel-label">Сэдэв</div><select class="inp sel-topic" aria-label="Сэдэв"></select><div class="sel-note"></div>';
   const chips = box.querySelector('.grade-chips');
   const sel = box.querySelector('select');
@@ -1370,11 +1384,20 @@ function selMount(boxId, st) {
     b.className = 'grade-chip';
     b.textContent = g;
     b.dataset.g = g;
+    if (CMQ.SOON[g]) {
+      b.className += ' soon';
+      b.disabled = true;
+      b.title = g + '-р анги — Тун удахгүй';
+      b.setAttribute('aria-label', g + '-р анги — Тун удахгүй');
+      chips.appendChild(b);
+      return;
+    }
     b.title = g + '-р анги';
     b.setAttribute('aria-label', g + '-р анги');
     b.onclick = () => { if (st.grade !== g) { st.grade = g; st.topic = '0'; render(); } };
     chips.appendChild(b);
   });
+  if (!CMQ.pickGrade(st.grade)) { st.grade = CMQ.homeGrade(); st.topic = '0'; }
   sel.onchange = () => { st.topic = CMQ.normTopic(sel.value) || '0'; };
   const opt = (v, txt) => { const o = document.createElement('option'); o.value = v; o.textContent = txt; return o; };
   let seq = 0;
@@ -1423,12 +1446,13 @@ function selMount(boxId, st) {
   render();
   return {
     render,
-    set(g, t) { st.grade = CMQ.normGrade(g) || st.grade; st.topic = CMQ.normTopic(t) || '0'; render(); },
+    set(g, t) { const pg = CMQ.pickGrade(g); st.grade = pg || st.grade; st.topic = (pg && CMQ.normTopic(t)) || '0'; render(); },
   };
 }
 function selText(grade, topic, topicName) {
   grade = CMQ.normGrade(grade);
   if (!grade) return '';
+  if (!CMQ.pickGrade(grade)) return CMQ.homeGrade() + '-р анги · Бүх сэдэв';   // «Тун удахгүй» ангитай хуучин room
   const t = CMQ.normTopic(topic) || '0';
   return grade + '-р анги · ' + (t === '0' ? 'Бүх сэдэв' : (topicName || CMQ.topicName(grade, t) || 'Сонгосон сэдэв'));
 }
@@ -1622,7 +1646,7 @@ function startMultiGame() {
     .then(r => { if (!r.ok) { const e = new Error('room'); e.status = r.status || 404; throw e; } return r.json(); })
     .then(data => {
       // Room-ын анги/сэдвээр cyber-math-ийн сангаас бодлого татна (хуучин room: хостын анхдагч анги, бүх сэдэв)
-      const rg = CMQ.normGrade(data.grade);
+      const rg = CMQ.pickGrade(data.grade);
       btn.textContent = 'Бодлого ачаалж байна...';
       return CMQ.load(rg || CMQ.homeGrade(), rg ? (CMQ.normTopic(data.topic) || '0') : '0', data.topicName)
         .then(() => data);
@@ -1906,7 +1930,7 @@ function openTeacherScreen() {
           if (nameEl && myRooms[0].name) nameEl.textContent = '📌 ' + myRooms[0].name;
           const selEl = document.getElementById('roomCodeSel');
           if (selEl) selEl.textContent = selText(data.grade, data.topic, data.topicName);
-          if (CMQ.normGrade(data.grade) && teacherSelUI) teacherSelUI.set(data.grade, data.topic);
+          if (CMQ.pickGrade(data.grade) && teacherSelUI) teacherSelUI.set(data.grade, data.topic);
           document.getElementById('roomCodeBox').style.display = 'block';
         } else {
           shipCells = new Set();
