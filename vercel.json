@@ -2,13 +2,10 @@
   "version": 2,
   "outputDirectory": ".",
   "builds": [
-    { "src": "api/*.js", "use": "@vercel/node" },
     { "src": "index.html", "use": "@vercel/static" }
   ],
   "routes": [
-    { "src": "/api/rooms", "dest": "/api/rooms.js" },
-    { "src": "/api/room",  "dest": "/api/room.js"  },
-    { "src": "/api/score", "dest": "/api/score.js" },
+    { "src": "^/api/(room|score)$", "dest": "https://cyber-math.com/api/battle/nb/$1" },
     { "src": "/(.*)",      "dest": "/index.html"   }
   ]
 }
